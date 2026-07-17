@@ -63,10 +63,11 @@ function TileErrorWatcher({ onTileError }) {
  * @param {object}   props
  * @param {object}   props.pointIntervention  {lat, lon} ou null
  * @param {Array}    props.batimentsFiltres   Bâtiments dans le rayon après filtres, enrichis de `distance`
+ * @param {string}   props.batimentActifId    ID du bâtiment dont la fiche est ouverte (ou null)
  * @param {Function} props.onClicCarte        Appelé avec {lat, lon} lors d'un clic sur la carte
  * @param {Function} props.onClicMarker       Appelé avec le bâtiment sélectionné
  */
-export default function MapView({ pointIntervention, batimentsFiltres, onClicCarte, onClicMarker }) {
+export default function MapView({ pointIntervention, batimentsFiltres, batimentActifId, onClicCarte, onClicMarker }) {
   const [fondCarteIndisponible, setFondCarteIndisponible] = useState(false)
 
   return (
@@ -127,16 +128,17 @@ export default function MapView({ pointIntervention, batimentsFiltres, onClicCar
         {batimentsFiltres.map((batiment) => {
           const niveau = NIVEAUX_DANGER[batiment.niveau_danger]
           const couleur = niveau ? niveau.couleur : '#888'
+          const estActif = batiment.id === batimentActifId
           return (
             <CircleMarker
               key={batiment.id}
               center={[batiment.latitude, batiment.longitude]}
-              radius={10}
+              radius={estActif ? 14 : 10}
               pathOptions={{
-                color: couleur,
+                color: estActif ? '#ffffff' : couleur,
                 fillColor: couleur,
-                fillOpacity: 0.85,
-                weight: 2,
+                fillOpacity: 0.95,
+                weight: estActif ? 4 : 2,
               }}
               eventHandlers={{
                 click: (e) => {
@@ -146,7 +148,7 @@ export default function MapView({ pointIntervention, batimentsFiltres, onClicCar
               }}
             >
               {/* Étiquette de distance — RA-007 */}
-              <Tooltip permanent direction="bottom" offset={[0, 8]} className={styles.distanceLabel}>
+              <Tooltip permanent direction="bottom" offset={[0, estActif ? 12 : 8]} className={estActif ? styles.distanceLabelActif : styles.distanceLabel}>
                 {batiment.distance} m
               </Tooltip>
             </CircleMarker>

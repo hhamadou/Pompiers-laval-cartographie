@@ -11,9 +11,17 @@
   align-items: center;
 }
 
-.input {
+/* Wrapper relatif pour positionner le bouton ✕ à l'intérieur du champ */
+.inputWrapper {
   flex: 1;
-  padding: 0.5rem 0.75rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 0.75rem; /* padding-right réservé au bouton ✕ */
   font-size: 0.95rem;
   border: 1px solid #aaa;
   border-radius: 4px;
@@ -23,6 +31,25 @@
 .input:focus {
   outline: 2px solid #cc0000;
   outline-offset: 1px;
+}
+
+/* Bouton ✕ Effacer — positionné à l'intérieur du champ */
+.boutonEffacer {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #888;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.boutonEffacer:hover {
+  color: #cc0000;
 }
 
 .bouton {

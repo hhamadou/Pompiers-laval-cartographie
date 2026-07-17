@@ -82,6 +82,14 @@ export default function App() {
     setPointIntervention({ lat: suggestion.lat, lon: suggestion.lon })
   }
 
+  // ─── Bouton Effacer : remet l'application à l'état initial ───────────────
+  function handleReinitialiser() {
+    setPointIntervention(null)
+    setMessageErreur('')
+    setBatimentSelectionne(null)
+    setSuggestions([])
+  }
+
   // ─── C-002 : Clic direct sur la carte (fallback Nominatim — DEC-007) ─────
   function handleClicCarte(coords) {
     setMessageErreur('')
@@ -111,6 +119,7 @@ export default function App() {
       <SearchBar
         onLocaliser={handleLocaliser}
         onSelectionner={handleSelectionnerSuggestion}
+        onReinitialiser={handleReinitialiser}
         suggestions={suggestions}
         chargement={geocodageEnCours}
         messageErreur={messageErreur}
@@ -129,6 +138,7 @@ export default function App() {
       <MapView
         pointIntervention={pointIntervention}
         batimentsFiltres={batimentsFiltres}
+        batimentActifId={batimentSelectionne ? batimentSelectionne.id : null}
         onClicCarte={handleClicCarte}
         onClicMarker={handleClicMarker}
       />

@@ -19,6 +19,18 @@
   border-radius: 3px;
 }
 
+/* Étiquette du marker actif (fiche ouverte) */
+.distanceLabelActif {
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #1a1a2e;
+  color: #ffffff;
+  border: none;
+  box-shadow: none;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
 .messageAucunResultat {
   position: absolute;
   bottom: 2rem;
