@@ -1,0 +1,755 @@
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rapport Technique — Pompiers Laval Cartographie</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #ffffff;
+    padding: 32px 16px 64px;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    border-bottom: 3px solid #1a1a2e;
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+  }
+  .header-badge {
+    display: inline-block;
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.2;
+  }
+  .header .subtitle {
+    color: #57606a;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* Section */
+  .section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+    border-left: 4px solid #3b82d4;
+    padding-left: 12px;
+    margin-bottom: 16px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2328;
+    margin: 18px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Cards row */
+  .cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .card {
+    flex: 1 1 160px;
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .card-label { font-size: 11px; color: #57606a; text-transform: uppercase; letter-spacing: 0.06em; }
+  .card-value { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-top: 2px; }
+  .card-sub { font-size: 12px; color: #57606a; margin-top: 2px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  thead tr { background: #1a1a2e; color: #fff; }
+  thead th { padding: 8px 12px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.04em; }
+  tbody tr { border-bottom: 1px solid #e5e7eb; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f7f8fa; }
+  td { padding: 7px 12px; vertical-align: top; }
+  td:first-child { font-weight: 600; color: #1a1a2e; white-space: nowrap; }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-blue  { background: #dbeafe; color: #1e40af; }
+  .badge-gray  { background: #f3f4f6; color: #374151; }
+  .badge-red   { background: #fee2e2; color: #991b1b; }
+  .badge-orange{ background: #ffedd5; color: #92400e; }
+
+  /* Code blocks */
+  pre {
+    background: #1a1a2e;
+    color: #e2e8f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin-bottom: 12px;
+  }
+  code {
+    font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+  }
+  .inline-code {
+    background: #f3f4f6;
+    color: #1f2328;
+    border: 1px solid #e5e7eb;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+    font-size: 12px;
+  }
+
+  /* Tree */
+  .tree {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: #1f2328;
+  }
+  .tree .folder { color: #3b82d4; font-weight: 700; }
+  .tree .file   { color: #1f2328; }
+  .tree .comment { color: #57606a; }
+
+  /* Timeline */
+  .timeline { list-style: none; padding: 0; position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px; top: 0; bottom: 0;
+    width: 2px; background: #e5e7eb;
+  }
+  .timeline li {
+    position: relative;
+    padding: 4px 0 14px 42px;
+  }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 8px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #3b82d4;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #3b82d4;
+  }
+  .timeline .step-title { font-weight: 700; font-size: 13px; color: #1f2328; }
+  .timeline .step-desc  { font-size: 12.5px; color: #57606a; margin-top: 2px; }
+
+  /* Rule box */
+  .rule-box {
+    background: #fff8f0;
+    border: 1px solid #fed7aa;
+    border-left: 4px solid #f97316;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: #7c2d12;
+    margin-bottom: 12px;
+  }
+  .rule-box strong { color: #c2410c; }
+
+  /* Info box */
+  .info-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #3b82f6;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: #1e3a5f;
+    margin-bottom: 12px;
+  }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 28px 0; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: #9ca3af;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 16px;
+    margin-top: 48px;
+  }
+
+  /* Module card */
+  .module-grid { display: flex; flex-direction: column; gap: 12px; }
+  .module-card {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+    border-left: 4px solid #3b82d4;
+  }
+  .module-card.danger { border-left-color: #ef4444; }
+  .module-card.success { border-left-color: #10b981; }
+  .module-card.purple { border-left-color: #7c5cd8; }
+  .module-card.orange { border-left-color: #f97316; }
+  .module-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .module-card p  { font-size: 12.5px; color: #57606a; }
+  .module-card .tags { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="header">
+    <div class="header-badge">Rapport Technique — v0.1.0</div>
+    <h1>Pompiers Laval — Cartographie des Sites à Risques</h1>
+    <div class="subtitle">
+      Service de Sécurité Incendie (SSI) — Ville de Laval  |  Proof of Concept  | 
+      Généré le 2025-07-16
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">1. Contexte &amp; Objectif</div>
+    <p style="margin-bottom:10px">
+      Le Service de Sécurité Incendie (SSI) de la Ville de Laval gérait les données de matières dangereuses
+      dans des fichiers manuels. En situation d'urgence, la recherche d'information était lente et peu fiable.
+    </p>
+    <p style="margin-bottom:16px">
+      <strong>Solution développée :</strong> une SPA (Single Page Application) React permettant aux dispatchers
+      et chefs de caserne d'identifier en quelques secondes les bâtiments contenant des matières dangereuses
+      dans un rayon de <strong>500 mètres</strong> autour d'un point d'intervention, via une carte interactive
+      Leaflet/OpenStreetMap.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-label">Nature</div>
+        <div class="card-value">POC</div>
+        <div class="card-sub">Proof of Concept</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Bâtiments</div>
+        <div class="card-value">34</div>
+        <div class="card-sub">Établissements Laval</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Rayon fixe</div>
+        <div class="card-value">500 m</div>
+        <div class="card-sub">Non modifiable</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Tests</div>
+        <div class="card-value">10 / 10</div>
+        <div class="card-sub">Vitest — ✓ Pass</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Build</div>
+        <div class="card-value">88</div>
+        <div class="card-sub">Modules — 0 erreur</div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">2. Environnement de Développement</div>
+    <table>
+      <thead>
+        <tr><th>Outil</th><th>Version</th><th>Rôle</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Node.js</td><td>v24.18.0</td><td>Environnement d'exécution JavaScript (runtime)</td></tr>
+        <tr><td>npm</td><td>v11.16.0</td><td>Gestionnaire de paquets</td></tr>
+        <tr><td>OS</td><td>Windows 10 (x64)</td><td>Plateforme de développement</td></tr>
+        <tr><td>Shell</td><td>PowerShell</td><td>Exécution des commandes build/test/dev</td></tr>
+        <tr><td>Git</td><td>—</td><td>Versionnement du code source</td></tr>
+        <tr><td>GitHub</td><td>hhamadou/Pompiers-laval-cartographie</td><td>Dépôt distant</td></tr>
+        <tr><td>Branche active</td><td>develop</td><td>Branche de développement principal</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">3. Stack Technique Retenue</div>
+
+    <div class="section-subtitle">Dépendances de production</div>
+    <table>
+      <thead><tr><th>Paquet</th><th>Version</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>react</td><td>^18.3.1</td><td>Framework UI — composants fonctionnels + hooks</td></tr>
+        <tr><td>react-dom</td><td>^18.3.1</td><td>Rendu React dans le DOM</td></tr>
+        <tr><td>leaflet</td><td>^1.9.4</td><td>Bibliothèque cartographique bas niveau</td></tr>
+        <tr><td>react-leaflet</td><td>^4.2.1</td><td>Wrapper React pour Leaflet (composants JSX)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-subtitle">Dépendances de développement</div>
+    <table>
+      <thead><tr><th>Paquet</th><th>Version</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>vite</td><td>^5.4.19</td><td>Bundler/serveur de développement — HMR ultra-rapide</td></tr>
+        <tr><td>@vitejs/plugin-react</td><td>^4.3.4</td><td>Plugin Vite pour la compilation JSX (Babel/SWC)</td></tr>
+        <tr><td>vitest</td><td>^2.1.9</td><td>Framework de tests unitaires compatible Vite</td></tr>
+        <tr><td>jsdom</td><td>^26.1.0</td><td>Environnement DOM simulé pour les tests Vitest</td></tr>
+        <tr><td>@types/leaflet</td><td>^1.9.14</td><td>Types TypeScript Leaflet (autocomplétion IDE)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-subtitle">Choix techniques justifiés</div>
+    <table>
+      <thead><tr><th>Décision</th><th>Choix</th><th>Justification</th></tr></thead>
+      <tbody>
+        <tr><td>Langage</td><td>JavaScript ES6+</td><td>POC — TypeScript non requis, gain de simplicité</td></tr>
+        <tr><td>État</td><td>useState + useMemo</td><td>POC — Zustand/Redux sur-dimensionné</td></tr>
+        <tr><td>Style</td><td>CSS Modules</td><td>Scoping local sans conflit entre composants</td></tr>
+        <tr><td>Données</td><td>Import JSON statique</td><td>Intégré au bundle — pas de fetch, disponible hors réseau</td></tr>
+        <tr><td>Géocodage</td><td>Nominatim (OSM)</td><td>Gratuit, sans clé API, résultats en français</td></tr>
+        <tr><td>Fond de carte</td><td>OpenStreetMap</td><td>Gratuit, open-source, fallback OSM France</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">4. Architecture de l'Application</div>
+
+    <div class="section-subtitle">Structure des fichiers</div>
+    <div class="tree">
+<span class="folder">pompiers-laval-cartographie/</span><br />
+├── <span class="file">index.html</span>         <span class="comment">← Point d'entrée HTML (Vite)</span><br />
+├── <span class="file">package.json</span>       <span class="comment">← Dépendances + scripts npm</span><br />
+├── <span class="file">vite.config.js</span>     <span class="comment">← Config Vite + Vitest (jsdom)</span><br />
+├── <span class="file">.gitignore</span>         <span class="comment">← node_modules, dist, .env exclus</span><br />
+├── <span class="folder">src/</span><br />
+│   ├── <span class="file">main.jsx</span>        <span class="comment">← Bootstrap React (ReactDOM.render)</span><br />
+│   ├── <span class="file">App.jsx</span>         <span class="comment">← Orchestration C-001→C-005, états globaux</span><br />
+│   ├── <span class="file">App.module.css</span><br />
+│   ├── <span class="folder">config/</span><br />
+│   │   └── <span class="file">params.js</span>   <span class="comment">← PARAM_001–005 | MESSAGES | NIVEAUX_DANGER</span><br />
+│   ├── <span class="folder">data/</span><br />
+│   │   └── <span class="file">batiments.json</span> <span class="comment">← 34 établissements Laval (copie donnees_etablissements.json)</span><br />
+│   ├── <span class="folder">modules/</span><br />
+│   │   ├── <span class="file">dataLoader.js</span>  <span class="comment">← C-001 : import statique JSON</span><br />
+│   │   └── <span class="file">geoEngine.js</span>   <span class="comment">← C-002/003 : Nominatim + haversine + suggestions</span><br />
+│   └── <span class="folder">components/</span><br />
+│       ├── <span class="folder">StatusBar/</span>     <span class="comment">← C-001 : barre de statut + compteur bâtiments</span><br />
+│       ├── <span class="folder">SearchBar/</span>     <span class="comment">← C-002 + CA-005 : champ adresse + suggestions</span><br />
+│       ├── <span class="folder">MapView/</span>       <span class="comment">← C-002/003 + MSG-006 : carte Leaflet + TileErrorWatcher</span><br />
+│       ├── <span class="folder">FilterPanel/</span>   <span class="comment">← C-004 : toggles danger + select type</span><br />
+│       └── <span class="folder">BuildingSheet/</span> <span class="comment">← C-005 : modale fiche synthétique</span><br />
+└── <span class="folder">tests/</span><br />
+    └── <span class="file">geoEngine.test.js</span>  <span class="comment">← 10 tests unitaires haversine + filtrage</span>
+    </div>
+
+    <div class="section-subtitle">Flux de données</div>
+    <div class="info-box">
+      <strong>Chargement :</strong> <code>batiments.json</code> → <code>dataLoader.js</code> (import statique synchrone) → <code>App.jsx</code> (variable module-level, jamais re-chargée)<br /><br />
+      <strong>Recherche :</strong> <code>SearchBar</code> → <code>App.handleLocaliser()</code> → <code>geoEngine.geocoderAdresseSuggestions()</code> (Nominatim) → <code>setPointIntervention()</code><br /><br />
+      <strong>Filtrage :</strong> <code>pointIntervention</code> → <code>geoEngine.filtrerParRayon()</code> (haversine) → <code>useMemo batimentsDansRayon</code> → <code>useMemo batimentsFiltres</code> (niveau + type)<br /><br />
+      <strong>Affichage :</strong> <code>batimentsFiltres</code> → <code>MapView</code> (CircleMarker Leaflet) → clic marker → <code>BuildingSheet</code> (modale)
+    </div>
+
+    <div class="section-subtitle">Composants internes de MapView</div>
+    <div class="module-grid">
+      <div class="module-card">
+        <h4>RecenterMap</h4>
+        <p>Utilise <code>useMap()</code> pour appeler <code>map.setView()</code> dès que <code>pointIntervention</code> change. Repositionne la carte automatiquement au zoom 15.</p>
+      </div>
+      <div class="module-card orange">
+        <h4>ClickHandler</h4>
+        <p>Utilise <code>useMapEvents()</code> pour capturer les clics sur la carte. Ignore les clics sur les markers SVG (<code>path</code>, <code>circle</code>). Implémente le fallback DEC-007.</p>
+      </div>
+      <div class="module-card danger">
+        <h4>TileErrorWatcher</h4>
+        <p>Écoute l'événement <code>tileerror</code> de Leaflet. Affiche la bannière <code>MESSAGES.FOND_CARTE_INDISPONIBLE</code> si une tuile ne se charge pas. Nettoyage propre au unmount.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">5. Modules Métier</div>
+
+    <div class="section-subtitle">params.js — Source de vérité centralisée</div>
+    <table>
+      <thead><tr><th>Constante</th><th>Valeur</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td>PARAM_001 — RAYON_RECHERCHE</td><td>500 m</td><td>Rayon fixe, jamais modifiable par l'utilisateur</td></tr>
+        <tr><td>PARAM_002 — COULEUR_DANGER_ELEVE</td><td>#CC0000</td><td>Couleur marker niveau 1 (danger élevé)</td></tr>
+        <tr><td>PARAM_003 — COULEUR_DANGER_MODERE</td><td>#FF6600</td><td>Couleur marker niveau 2 (danger modéré)</td></tr>
+        <tr><td>PARAM_004 — COULEUR_DANGER_FAIBLE</td><td>#FFCC00</td><td>Couleur marker niveau 3 (danger faible)</td></tr>
+        <tr><td>PARAM_005 — DELAI_TIMEOUT_GEOCODAGE</td><td>3 s</td><td>Timeout AbortController Nominatim</td></tr>
+        <tr><td>MSG-001 → MSG-007</td><td>Strings/fonctions</td><td>Tous les messages UI — jamais écrits librement</td></tr>
+        <tr><td>NIVEAUX_DANGER</td><td>{1,2,3}</td><td>Mapping numéro → {libelle, couleur}</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-subtitle">dataLoader.js — C-001</div>
+    <pre><code>import batimentsData from '../data/batiments.json'
+// Import statique → bundle Vite → disponible sans réseau
+export function chargerBatiments() {
+  return batimentsData
+}</code></pre>
+    <p style="font-size:12.5px;color:#57606a;margin-bottom:12px">
+      Chargement synchrone au démarrage du bundle. Aucun <code>useEffect</code> asynchrone requis.
+      Les 34 bâtiments sont disponibles immédiatement.
+    </p>
+
+    <div class="section-subtitle">geoEngine.js — C-002, C-003</div>
+    <table>
+      <thead><tr><th>Fonction exportée</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td>geocoderAdresseSuggestions(adresse)</td><td>Retourne jusqu'à 3 suggestions Nominatim <code>{lat, lon, libelle}</code>. Timeout AbortController PARAM_005. Filtre Canada (<code>countrycodes: 'ca'</code>).</td></tr>
+        <tr><td>geocoderAdresse(adresse)</td><td>Retourne un seul résultat <code>{lat, lon}</code> (limit:1). Utilisé en fallback direct.</td></tr>
+        <tr><td>calculerDistance(lat1, lon1, lat2, lon2)</td><td>Formule haversine — distance en mètres entre deux points GPS. Rayon Terre = 6 371 000 m.</td></tr>
+        <tr><td>filtrerParRayon(batiments, lat, lon)</td><td>Filtre les bâtiments dans PARAM_001 (500m). Exclut silencieusement les bâtiments sans GPS (RA-009). Enrichit chaque résultat avec <code>distance</code>. Trie par distance croissante.</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-box">
+      <strong>Politique Nominatim :</strong> Header <code>User-Agent: PompiersLavalCartographie/0.1 (intranet-ssi-laval)</code> + <code>Accept-Language: fr</code> obligatoires sur toutes les requêtes — conforme à la politique d'usage Nominatim/OSM.
+    </div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">6. Capacités Fonctionnelles Implémentées</div>
+    <table>
+      <thead><tr><th>Capacité</th><th>Composant(s)</th><th>Description</th><th>Statut</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>C-001</td>
+          <td>StatusBar + dataLoader</td>
+          <td>Chargement statique des 34 bâtiments. Affichage badge "34 bâtiments chargés".</td>
+          <td><span class="badge badge-green">✓ Implémenté</span></td>
+        </tr>
+        <tr>
+          <td>C-002</td>
+          <td>SearchBar + geoEngine + MapView</td>
+          <td>Saisie d'adresse → géocodage Nominatim → centrage carte + cercle 500m. Fallback clic direct sur carte (DEC-007).</td>
+          <td><span class="badge badge-green">✓ Implémenté</span></td>
+        </tr>
+        <tr>
+          <td>C-003</td>
+          <td>geoEngine + MapView</td>
+          <td>Calcul haversine sur 34 bâtiments → affichage des markers colorés dans le rayon + étiquette distance.</td>
+          <td><span class="badge badge-green">✓ Implémenté</span></td>
+        </tr>
+        <tr>
+          <td>C-004</td>
+          <td>FilterPanel + App</td>
+          <td>Toggles niveau de danger (1/2/3) + liste déroulante type d'établissement. Filtres actifs par défaut (RA-010).</td>
+          <td><span class="badge badge-green">✓ Implémenté</span></td>
+        </tr>
+        <tr>
+          <td>C-005</td>
+          <td>BuildingSheet</td>
+          <td>Modale fiche synthétique 7 champs. Une seule fiche à la fois (RA-013). Fermeture Échap. Champ vide → "Non renseigné" (RA-014).</td>
+          <td><span class="badge badge-green">✓ Implémenté</span></td>
+        </tr>
+        <tr>
+          <td>CA-005</td>
+          <td>SearchBar + App</td>
+          <td>Si Nominatim retourne &gt;1 résultat → liste déroulante 3 suggestions cliquables sous le champ de saisie.</td>
+          <td><span class="badge badge-green">✓ Implémenté</span></td>
+        </tr>
+        <tr>
+          <td>MSG-006</td>
+          <td>MapView (TileErrorWatcher)</td>
+          <td>Bannière orange en haut de la carte si une tuile OSM ne se charge pas. Données restent consultables.</td>
+          <td><span class="badge badge-green">✓ Implémenté</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">7. Règles Transversales &amp; Décisions Architecture</div>
+    <table>
+      <thead><tr><th>Code</th><th>Règle</th><th>Application dans le code</th></tr></thead>
+      <tbody>
+        <tr><td>DEC-001</td><td>Rayon 500m fixe</td><td><code>PARAMS.RAYON_RECHERCHE</code> dans <code>params.js</code> — jamais hardcodé ailleurs</td></tr>
+        <tr><td>DEC-002</td><td>Pas d'authentification</td><td>Aucun middleware de auth — application publique intranet</td></tr>
+        <tr><td>DEC-003</td><td>1=Élevé / 2=Modéré / 3=Faible</td><td>Objet <code>NIVEAUX_DANGER</code> dans <code>params.js</code></td></tr>
+        <tr><td>DEC-004</td><td>Données JSON statiques</td><td><code>import batimentsData from '../data/batiments.json'</code></td></tr>
+        <tr><td>DEC-005</td><td>Pas de localStorage</td><td>Aucun appel à <code>localStorage</code> dans le code</td></tr>
+        <tr><td>DEC-006</td><td>Nominatim sans clé API</td><td>URL <code>nominatim.openstreetmap.org/search</code></td></tr>
+        <tr><td>DEC-007</td><td>Fallback clic sur carte</td><td><code>ClickHandler</code> dans <code>MapView.jsx</code></td></tr>
+        <tr><td>DEC-008</td><td>Fond OSM + fallback OSM France</td><td>2 couches <code>TileLayer</code> dans <code>MapView.jsx</code></td></tr>
+        <tr><td>DEC-009</td><td>Coordonnées GPS → bypass Nominatim</td><td><code>filtrerParRayon</code> utilise <code>b.latitude</code> / <code>b.longitude</code> directement</td></tr>
+        <tr><td>RT-001</td><td>Couleurs markers depuis params</td><td><code>NIVEAUX_DANGER[niveau].couleur</code> — jamais de valeur hex dans les composants</td></tr>
+        <tr><td>RT-002</td><td>Messages UI depuis MESSAGES</td><td>Tout texte affiché à l'utilisateur passe par <code>MESSAGES.xxx</code></td></tr>
+        <tr><td>RA-009</td><td>Bâtiments sans GPS exclus</td><td><code>.filter((b) =&gt; b.latitude != null &amp;&amp; b.longitude != null)</code></td></tr>
+        <tr><td>RA-013</td><td>Une seule fiche ouverte</td><td><code>setBatimentSelectionne</code> remplace — <code>BuildingSheet</code> return null si null</td></tr>
+        <tr><td>RA-014</td><td>Champ vide → "Non renseigné"</td><td>Fonction <code>valeur(v)</code> dans <code>BuildingSheet.jsx</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">8. Modèle de Données</div>
+    <p style="font-size:12.5px;color:#57606a;margin-bottom:10px">
+      Source : <code>src/data/batiments.json</code> (copie de <code>donnees_etablissements.json</code>) — 34 établissements.
+    </p>
+    <table>
+      <thead><tr><th>Champ</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>id</td><td>string</td><td>Identifiant unique (ex: BAT-001)</td></tr>
+        <tr><td>nom</td><td>string</td><td>Nom de l'établissement</td></tr>
+        <tr><td>adresse</td><td>string</td><td>Adresse complète</td></tr>
+        <tr><td>type_etablissement</td><td>string</td><td>Catégorie (Industriel, Commercial, etc.)</td></tr>
+        <tr><td>matieres_dangereuses</td><td>string[]</td><td>Liste des matières présentes</td></tr>
+        <tr><td>quantites</td><td>string</td><td>Quantités connues</td></tr>
+        <tr><td>niveau_danger</td><td>1 | 2 | 3</td><td>1=Élevé, 2=Modéré, 3=Faible</td></tr>
+        <tr><td>consignes</td><td>string</td><td>Consignes particulières pour les pompiers</td></tr>
+        <tr><td>latitude</td><td>number | null</td><td>GPS — null → exclu silencieusement (RA-009)</td></tr>
+        <tr><td>longitude</td><td>number | null</td><td>GPS — null → exclu silencieusement (RA-009)</td></tr>
+      </tbody>
+    </table>
+    <div class="info-box">
+      <strong>Recalibrage GPS :</strong> Les coordonnées initiales ne correspondaient pas à des adresses reconnues par Nominatim. 
+      Toutes les coordonnées ont été recalées de <strong>+0.0029 lat / −0.0062 lon</strong>. 
+      Centre de la zone : <strong>45.5675, −73.7501</strong> (quartier Chomedey, Laval). 
+      Adresse de test validée : <em>3030 boul Le Carrefour, Laval</em>.
+    </div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">9. Tests Unitaires</div>
+    <p style="font-size:12.5px;color:#57606a;margin-bottom:12px">
+      Framework : <strong>Vitest 2.1.9</strong> — environnement <strong>jsdom</strong> — fichier : <code>tests/geoEngine.test.js</code>
+    </p>
+    <table>
+      <thead><tr><th>#</th><th>Suite</th><th>Description du test</th><th>Résultat</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>calculerDistance</td><td>Retourne 0 pour deux points identiques</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>2</td><td>calculerDistance</td><td>Distance réaliste entre deux points de Laval (~150m)</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>3</td><td>calculerDistance</td><td>Valeur positive même si coordonnées inversées (symétrie)</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>4</td><td>filtrerParRayon</td><td>Exclut les bâtiments hors rayon de 500m</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>5</td><td>filtrerParRayon</td><td>Inclut les bâtiments dans le rayon</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>6</td><td>filtrerParRayon</td><td>Exclut silencieusement les bâtiments sans GPS (RA-009)</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>7</td><td>filtrerParRayon</td><td>Enrichit chaque bâtiment retenu avec propriété <code>distance</code></td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>8</td><td>filtrerParRayon</td><td>Retourne liste vide si aucun bâtiment dans le rayon</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>9</td><td>filtrerParRayon</td><td>Trie les résultats par distance croissante</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+        <tr><td>10</td><td>filtrerParRayon</td><td>Respecte le rayon PARAM_001 de 500m</td><td><span class="badge badge-green">✓ Pass</span></td></tr>
+      </tbody>
+    </table>
+    <pre><code>npm run test
+# → 10 tests passent | 0 échec | 0 skip | Vitest 2.1.9</code></pre>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">10. Ordre de Réalisation (Chronologie)</div>
+    <ul class="timeline">
+      <li>
+        <div class="step-title">Étape 1 — Analyse du dossier fonctionnel</div>
+        <div class="step-desc">Lecture et analyse complète du dossier fonctionnel SSI Laval v1.0. Identification des 5 capacités, 10 décisions, règles transversales, paramètres système et messages utilisateur. Détection des lacunes (stack, tests, déploiement).</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 2 — Validation de la stack technique</div>
+        <div class="step-desc">Proposition et validation : React 18 + Vite 5 + react-leaflet 4 + Vitest + CSS Modules + Nominatim. Aucune modification demandée par l'utilisateur.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 3 — Génération manuelle du projet</div>
+        <div class="step-desc">Node.js absent du PATH initial → <code>npm create vite</code> impossible. Tous les fichiers du projet générés manuellement : <code>package.json</code>, <code>vite.config.js</code>, <code>index.html</code>, <code>.gitignore</code>.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 4 — Configuration centralisée (params.js)</div>
+        <div class="step-desc">Création de <code>src/config/params.js</code> avec PARAM_001–005, MESSAGES (MSG-001 à MSG-007), et NIVEAUX_DANGER. Règle absolue : aucune valeur hardcodée dans les composants.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 5 — C-001 : DataLoader</div>
+        <div class="step-desc">Module <code>dataLoader.js</code> avec import statique JSON. Copie de <code>donnees_etablissements.json</code> vers <code>src/data/batiments.json</code>. Composant <code>StatusBar</code>.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 6 — C-002/C-003 : GeoEngine + MapView</div>
+        <div class="step-desc">Fonctions <code>geocoderAdresse()</code> et <code>calculerDistance()</code> (haversine) + <code>filtrerParRayon()</code>. Composant <code>MapView</code> avec <code>RecenterMap</code>, <code>ClickHandler</code>, cercle 500m, markers colorés.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 7 — C-004 : FilterPanel</div>
+        <div class="step-desc">Toggles niveau de danger (couleurs depuis params) + liste déroulante type d'établissement généré dynamiquement depuis le JSON. Filtres actifs par défaut (RA-010).</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 8 — C-005 : BuildingSheet</div>
+        <div class="step-desc">Modale fiche synthétique 7 champs. Règle RA-013 (une seule fiche), RA-014 (champ vide), fermeture touche Échap, clic hors modale. Badge danger coloré depuis params.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 9 — App.jsx : orchestration</div>
+        <div class="step-desc">Câblage de tous les composants. États : <code>pointIntervention</code>, <code>filtresNiveau</code>, <code>filtreType</code>, <code>batimentSelectionne</code>, <code>suggestions</code>. Deux <code>useMemo</code> : <code>batimentsDansRayon</code> et <code>batimentsFiltres</code>.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 10 — Tests unitaires (geoEngine.test.js)</div>
+        <div class="step-desc">10 tests Vitest sur les deux fonctions pures : <code>calculerDistance</code> (3 tests) et <code>filtrerParRayon</code> (7 tests). Validation <code>npm run test</code> → 10/10 ✓.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 11 — Build de validation</div>
+        <div class="step-desc"><code>npm run build</code> → 88 modules compilés, 0 erreur. Dossier <code>dist/</code> prêt pour déploiement intranet.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 12 — Correctif CA-005 (suggestions Nominatim)</div>
+        <div class="step-desc">Ajout de <code>geocoderAdresseSuggestions()</code> (limit:3) dans geoEngine. <code>SearchBar.jsx</code> : liste <code>&lt;ul&gt;</code> cliquable sous le champ. <code>App.jsx</code> : gestion <code>setSuggestions</code> + <code>handleSelectionnerSuggestion</code>.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 13 — Correctif MSG-006 (TileErrorWatcher)</div>
+        <div class="step-desc">Composant interne <code>TileErrorWatcher</code> dans <code>MapView.jsx</code>. Écoute <code>map.on('tileerror')</code>. Bannière orange <code>MESSAGES.FOND_CARTE_INDISPONIBLE</code>.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 14 — Conformité Nominatim (User-Agent)</div>
+        <div class="step-desc">Ajout de la constante <code>NOMINATIM_HEADERS</code> partagée avec <code>User-Agent</code> et <code>Accept-Language: fr</code>. Appliquée sur les deux fonctions de géocodage.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 15 — Recalibrage coordonnées GPS</div>
+        <div class="step-desc">Diagnostic : coordonnées fictives hors zone Nominatim → aucun bâtiment visible après géocodage. Recalage de +0.0029 lat / −0.0062 lon sur les 34 bâtiments. Zone validée : Chomedey, Laval. Adresse test : <em>3030 boul Le Carrefour</em>.</div>
+      </li>
+      <li>
+        <div class="step-title">Étape 16 — Versionnement Git &amp; push develop</div>
+        <div class="step-desc">Dépôt GitHub : <code>hhamadou/Pompiers-laval-cartographie</code>. Branche : <code>develop</code>. Dernier commit : <code>2b85c98</code> — scénario de test mis à jour et poussé.</div>
+      </li>
+    </ul>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">11. Scripts npm &amp; Commandes</div>
+    <table>
+      <thead><tr><th>Script</th><th>Commande</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>dev</td><td><code>vite</code></td><td>Serveur de développement local → <code>http://localhost:5173</code> avec HMR</td></tr>
+        <tr><td>build</td><td><code>vite build</code></td><td>Build production → dossier <code>dist/</code> (88 modules, minifié)</td></tr>
+        <tr><td>preview</td><td><code>vite preview</code></td><td>Prévisualisation du build <code>dist/</code> avant déploiement</td></tr>
+        <tr><td>test</td><td><code>vitest</code></td><td>Exécution des tests unitaires (mode watch en dev)</td></tr>
+      </tbody>
+    </table>
+    <pre><code># Lancer en développement
+cd C:\Users\XXHamadou\.bob\playground\pompiers-laval-cartographie
+npm run dev
+
+# Lancer les tests
+npm run test
+
+# Build production
+npm run build
+# → dist/ prêt à déposer sur le serveur Windows intranet</code></pre>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">12. Déploiement &amp; Git</div>
+
+    <div class="section-subtitle">Déploiement intranet Windows</div>
+    <table>
+      <thead><tr><th>Étape</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>1. Build</td><td><code>npm run build</code> → génère <code>dist/</code></td></tr>
+        <tr><td>2. Copie</td><td>Déposer le dossier <code>dist/</code> sur le serveur Windows intranet SSI</td></tr>
+        <tr><td>3. Serveur</td><td>Serveur HTTP statique (IIS, nginx, ou <code>npx serve dist</code>)</td></tr>
+        <tr><td>4. Accès</td><td>URL intranet communiquée aux dispatchers — pas d'installation requise</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-subtitle">Versionnement Git</div>
+    <table>
+      <thead><tr><th>Élément</th><th>Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Dépôt GitHub</td><td>hhamadou/Pompiers-laval-cartographie</td></tr>
+        <tr><td>Branche principale dev</td><td>develop</td></tr>
+        <tr><td>Dernier commit</td><td>2b85c98 — chore: mise à jour scénario de test</td></tr>
+        <tr><td>Remote</td><td>https://github.com/hhamadou/Pompiers-laval-cartographie.git</td></tr>
+        <tr><td>Fichiers exclus (.gitignore)</td><td>node_modules/, dist/, .env, .DS_Store</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-subtitle">Hors périmètre POC — ne pas implémenter</div>
+    <table>
+      <thead><tr><th>Fonctionnalité</th><th>Raison</th></tr></thead>
+      <tbody>
+        <tr><td>File watcher automatique</td><td>Hors POC</td></tr>
+        <tr><td>Scan antivirus Microsoft Defender</td><td>Hors POC</td></tr>
+        <tr><td>Authentification utilisateur</td><td>Hors POC (DEC-002)</td></tr>
+        <tr><td>Modification des données</td><td>Application lecture seule</td></tr>
+        <tr><td>Historique des interventions</td><td>Hors POC</td></tr>
+        <tr><td>Application mobile native</td><td>Hors POC</td></tr>
+        <tr><td>Intégration systèmes CAD</td><td>Hors POC</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title">13. Accessibilité &amp; Qualité</div>
+    <table>
+      <thead><tr><th>Point</th><th>Implémentation</th></tr></thead>
+      <tbody>
+        <tr><td>ARIA roles</td><td><code>role="dialog"</code>, <code>role="alert"</code>, <code>role="status"</code>, <code>role="listbox"</code>, <code>role="option"</code>, <code>role="group"</code></td></tr>
+        <tr><td>Labels accessibles</td><td><code>aria-label</code> sur tous les boutons, input, select et markers</td></tr>
+        <tr><td>Fermeture clavier</td><td>Touche Échap ferme la modale BuildingSheet</td></tr>
+        <tr><td>ARIA pressed</td><td>Boutons toggle FilterPanel : <code>aria-pressed={true|false}</code></td></tr>
+        <tr><td>Champ désactivé</td><td>Input SearchBar désactivé pendant le géocodage (UX feedback)</td></tr>
+        <tr><td>Valeurs vides</td><td>"Non renseigné" affiché — jamais de champ blanc silencieux</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p>Made with IBM Bob</p>
+  </footer>
+
+</div>
+</body>
+</html>
