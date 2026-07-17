@@ -26,6 +26,10 @@ function RecenterMap({ point }) {
 function ClickHandler({ onClic }) {
   useMapEvents({
     click(e) {
+      // Ne déclencher que si le clic vient directement de la carte (pas d'un marker)
+      // e.originalEvent.target est le canvas SVG de la carte, pas un path SVG (marker)
+      const tag = e.originalEvent.target.tagName.toLowerCase()
+      if (tag === 'path' || tag === 'circle') return
       onClic({ lat: e.latlng.lat, lon: e.latlng.lng })
     },
   })
