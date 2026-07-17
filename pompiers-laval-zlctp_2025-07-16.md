@@ -11,11 +11,12 @@ Développer une SPA React (application web monopage) pour le Service de Sécurit
 ## 2. Current Status Snapshot
 
 - **Date/heure :** 2025-07-16 (dernière mise à jour)
-- **Dernière action complétée :** Ajout de 3 améliorations hors DF (autocomplétion frappe, bouton Effacer, marker actif distingué). `npm run build` ✅ (88 modules, 0 erreur) + `npm run test` ✅ (10/10). Poussé sur `origin/develop` (commit `7a50a7e`).
+- **Dernière action complétée :** Rapport d'écarts DF produit (`rapport-d-carts-hors-dossier-fonctionnel.html`). Tâche en cours : rédaction du Dossier Fonctionnel v2.0 intégrant les écarts identifiés.
 - **Environnement validé :** Node.js v24.18.0 / npm v11.16.0 / Windows 10
 - **Dépôt GitHub :** `hhamadou/Pompiers-laval-cartographie` — branche active : `develop`
+- **Dernier commit poussé :** `e92c62c` — docs: mise à jour ZLCTP
 - **État fonctionnel :** ✅ Toutes les capacités C-001→C-005 implémentées et validées. Application fonctionnelle confirmée par l'utilisateur.
-- **Prochaine action :** Traiter les 2 exigences DF non encore couvertes (ENF-004 responsive tablette + EF-009 police min 14px dans BuildingSheet).
+- **Prochaine action :** Finaliser et sauvegarder le DF v2.0, puis traiter ENF-004 (responsive tablette) + EF-009 (police min 14px).
 
 ---
 
@@ -127,7 +128,13 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
 
 18. **Rapport technique HTML généré et poussé** → `rapport-technique-pompiers-laval-cartographie.html` (commit `d018bd0`)
 
-19. **Rapport d'écarts DF généré** → Identifie 3 ajouts, 4 enrichissements, 5 décisions infra, et **2 exigences DF non couvertes** : ENF-004 (responsive tablette) + EF-009 (police min 14px dans BuildingSheet).
+19. **Rapport d'écarts DF généré** → `rapport-d-carts-hors-dossier-fonctionnel.html`. Identifie :
+    - 3 fonctionnalités ajoutées (autocomplétion, bouton Effacer, marker actif)
+    - 4 comportements enrichis (Échap, overlay, ARIA, TileLayer fallback)
+    - 5 décisions infra/technique (stack, CSS Modules, User-Agent, GPS, Git)
+    - **2 exigences DF non couvertes** : ENF-004 (responsive tablette) + EF-009 (police min 14px)
+
+20. **Dossier Fonctionnel v2.0 en cours de rédaction** → Intègre les 3 fonctionnalités ajoutées et les enrichissements comme exigences officielles. Sera sauvegardé dans `skills/analyste-fonctionnel/`.
 
 ---
 
@@ -269,9 +276,15 @@ Dans `SearchBar.jsx` :
 |---|---|
 | Dépôt | `hhamadou/Pompiers-laval-cartographie` |
 | Branche active | `develop` |
-| Dernier commit | `7a50a7e` — feat: autocomplétion frappe, bouton Effacer, marker actif distingué |
-| Commit précédent | `d018bd0` — docs: ajout rapport technique complet |
-| Commit précédent | `2b85c98` — chore: mise à jour scénario de test |
+| Dernier commit | `e92c62c` — docs: mise à jour ZLCTP |
+| `7a50a7e` | feat: autocomplétion frappe, bouton Effacer, marker actif distingué |
+| `d018bd0` | docs: ajout rapport technique complet |
+| `2b85c98` | chore: mise à jour scénario de test |
+| `c8a34ae` | fix: ClickHandler ignore clics path/circle SVG |
+| `a5f6e76` | fix: stopPropagation sur clic marker |
+| `8c376f7` | fix: recalibrage coordonnées GPS JSON |
+| `51f6dbd` | feat: CA-005, MSG-006, User-Agent, README |
+| `91a334c` | Initial commit |
 | Remote | `https://github.com/hhamadou/Pompiers-laval-cartographie.git` |
 
 ---
@@ -280,9 +293,9 @@ Dans `SearchBar.jsx` :
 
 | Priorité | Étape | Détail |
 |---|---|---|
+| 🔴 En cours | DF v2.0 | Finaliser et sauvegarder dans `skills/analyste-fonctionnel/Dossier fonctionnel - Pompiers Laval v2.0.md` |
 | 🔴 À traiter | ENF-004 — Responsive tablette | Ajouter media queries dans les CSS. Tester sur viewport 768px / 1024px. |
 | 🔴 À traiter | EF-009 — Police min 14px fiche | Vérifier `BuildingSheet.module.css` — certains `font-size: 0.85rem` peuvent descendre sous 14px. |
-| 🟡 Optionnel | Mettre à jour DF en v1.2 | Intégrer les 3 nouvelles fonctionnalités hors DF comme exigences officielles. |
 | 🟡 Optionnel | Build production + déploiement intranet | `npm run build` → copier `dist/` sur serveur Windows SSI. |
 
 ---

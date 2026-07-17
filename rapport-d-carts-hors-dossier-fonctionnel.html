@@ -1,0 +1,488 @@
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rapport d'écarts — Hors Dossier Fonctionnel</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #ffffff;
+    padding: 32px 16px 64px;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+
+  .header {
+    border-bottom: 3px solid #1a1a2e;
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  .header-badge {
+    display: inline-block;
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; color: #1a1a2e; line-height: 1.2; }
+  .header .subtitle { color: #57606a; font-size: 13px; margin-top: 6px; }
+
+  .intro-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #3b82f6;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #1e3a5f;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  .cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+  .card {
+    flex: 1 1 140px;
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .card-num { font-size: 26px; font-weight: 800; }
+  .card-label { font-size: 11px; color: #57606a; margin-top: 2px; }
+  .c-added    { color: #0369a1; }
+  .c-enhanced { color: #7c3aed; }
+  .c-infra    { color: #b45309; }
+  .c-missing  { color: #dc2626; }
+
+  .section { margin-bottom: 36px; }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2328;
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .title-added    { background: #dbeafe; border-left: 4px solid #3b82f6; }
+  .title-enhanced { background: #ede9fe; border-left: 4px solid #7c3aed; }
+  .title-infra    { background: #fef3c7; border-left: 4px solid #f59e0b; }
+  .title-missing  { background: #fee2e2; border-left: 4px solid #dc2626; }
+
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .pill-blue   { background: #dbeafe; color: #1e40af; }
+  .pill-purple { background: #ede9fe; color: #5b21b6; }
+  .pill-orange { background: #ffedd5; color: #92400e; }
+  .pill-red    { background: #fee2e2; color: #991b1b; }
+  .pill-green  { background: #d1fae5; color: #065f46; }
+  .pill-gray   { background: #f3f4f6; color: #374151; }
+
+  .ecart-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .ecart-header {
+    padding: 10px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .ecart-header-added    { background: #f0f7ff; }
+  .ecart-header-enhanced { background: #f5f3ff; }
+  .ecart-header-infra    { background: #fffbeb; }
+  .ecart-title { font-size: 13px; font-weight: 700; flex: 1; }
+  .ecart-body { padding: 12px 14px; }
+  .ecart-body p { font-size: 13px; color: #374151; margin-bottom: 8px; }
+  .ecart-body p:last-child { margin-bottom: 0; }
+
+  .df-ref {
+    background: #f3f4f6;
+    border: 1px dashed #d1d5db;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 8px;
+  }
+  .df-ref strong { color: #374151; }
+
+  .code {
+    font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 11.5px;
+    color: #1f2328;
+  }
+
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 28px 0; }
+
+  .reco-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-left: 4px solid #16a34a;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #14532d;
+    margin-bottom: 12px;
+  }
+  .reco-box strong { color: #15803d; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  thead tr { background: #1a1a2e; color: #fff; }
+  thead th { padding: 8px 12px; text-align: left; font-weight: 600; font-size: 12px; }
+  tbody tr { border-bottom: 1px solid #e5e7eb; }
+  tbody tr:last-child { border-bottom: none; }
+  td { padding: 7px 12px; vertical-align: top; }
+  td:first-child { font-weight: 600; }
+
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: #9ca3af;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 16px;
+    margin-top: 48px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-badge">Analyse d'écarts — v0.1.0</div>
+    <h1>Rapport : Ce qui est implémenté hors Dossier Fonctionnel v1.0</h1>
+    <div class="subtitle">
+      Dossier fonctionnel de référence : <em>Dossier fonctionnel - Pompiers Laval v1.0.md</em>  |  Généré le 2025-07-16
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <strong>Méthode :</strong> Chaque fonctionnalité du code a été croisée ligne par ligne avec le DF v1.0 (sections 2 à 18).
+    Ce rapport liste uniquement ce qui <strong>n'existe pas, n'est pas mentionné, ou dépasse</strong> le périmètre du DF.
+    Les éléments conformes au DF ne sont pas listés ici.
+  </div>
+
+  
+  <div class="cards">
+    <div class="card"><div class="card-num c-added">3</div><div class="card-label">Fonctionnalités ajoutées</div></div>
+    <div class="card"><div class="card-num c-enhanced">4</div><div class="card-label">Comportements enrichis</div></div>
+    <div class="card"><div class="card-num c-infra">5</div><div class="card-label">Décisions infra/tech</div></div>
+    <div class="card"><div class="card-num c-missing">2</div><div class="card-label">Exigences DF non couvertes</div></div>
+  </div>
+
+  
+  
+  
+  <div class="section">
+    <div class="section-title title-added">
+      <span>🔵</span> Catégorie 1 — Fonctionnalités ajoutées (absentes du DF)
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header ecart-header-added">
+        <span class="pill pill-blue">Ajout</span>
+        <div class="ecart-title">Autocomplétion pendant la frappe (debounce 300ms)</div>
+      </div>
+      <div class="ecart-body">
+        <p>Le champ d'adresse déclenche automatiquement une recherche Nominatim <strong>après 300ms d'inactivité</strong> dès 4 caractères saisis, sans que l'utilisateur appuie sur "Localiser". Le debounce est implémenté via <span class="code">useEffect + useRef</span> dans <span class="code">SearchBar.jsx</span>.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> Le DF ne mentionne que le déclenchement explicite par clic sur "Localiser" (section 9 C-002, composant réf. 2 : <em>"Au clic : déclenche géocodage"</em>). L'autocomplétion live n'est ni demandée ni évoquée.
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header ecart-header-added">
+        <span class="pill pill-blue">Ajout</span>
+        <div class="ecart-title">Bouton ✕ Effacer / Réinitialiser</div>
+      </div>
+      <div class="ecart-body">
+        <p>Un bouton <span class="code">✕</span> apparaît dans le champ de saisie dès qu'il y a du texte. Au clic, il efface le champ et remet <strong>l'intégralité de l'état App à zéro</strong> : point d'intervention, markers, fiche ouverte, suggestions, messages d'erreur.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> Aucune mention d'un bouton de réinitialisation dans les sections 2, 6, 9 (C-002, C-004), ou 17. Le DF ne décrit pas de mécanisme de remise à zéro. La section 9 C-004 mentionne que "les filtres persistent tant que l'utilisateur ne les réinitialise pas" sans préciser comment.
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header ecart-header-added">
+        <span class="pill pill-blue">Ajout</span>
+        <div class="ecart-title">Marker actif visuellement distingué quand une fiche est ouverte</div>
+      </div>
+      <div class="ecart-body">
+        <p>Quand la fiche synthétique d'un bâtiment est ouverte, son marker sur la carte change d'apparence : <strong>rayon agrandi (14 vs 10)</strong>, <strong>anneau blanc épais (weight 4)</strong>, et l'étiquette de distance passe en fond sombre avec texte blanc. La prop <span class="code">batimentActifId</span> est passée de <span class="code">App.jsx</span> vers <span class="code">MapView.jsx</span>.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> La section 9 C-005 ne mentionne aucun changement visuel du marker lors de l'ouverture de la fiche. La règle RA-006 (section 9 C-002) impose uniquement que le marker d'<em>intervention</em> soit distinct des markers de bâtiments — pas de distinction entre marker actif et marker inactif.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+  
+  <div class="section">
+    <div class="section-title title-enhanced">
+      <span>🟣</span> Catégorie 2 — Comportements enrichis (DF présent, mais code va plus loin)
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header ecart-header-enhanced">
+        <span class="pill pill-purple">Enrichi</span>
+        <div class="ecart-title">Fermeture de la fiche via touche Échap</div>
+      </div>
+      <div class="ecart-body">
+        <p>La modale <span class="code">BuildingSheet.jsx</span> écoute l'événement <span class="code">keydown</span> sur le document et se ferme à la touche <strong>Échap</strong>. L'écouteur est nettoyé proprement au unmount.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> CA-018 dit <em>"Quand l'utilisateur clique ✕ ou sur un autre marker, alors la fiche se ferme"</em>. La touche Échap n'est pas mentionnée. L'exigence ENF-003 (accessibilité WCAG AA) justifie cet ajout sans le prescrire explicitement.
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header ecart-header-enhanced">
+        <span class="pill pill-purple">Enrichi</span>
+        <div class="ecart-title">Fermeture de la fiche par clic sur l'overlay</div>
+      </div>
+      <div class="ecart-body">
+        <p>Un clic sur le fond semi-transparent derrière la modale (l'overlay) ferme la fiche. Implémenté via <span class="code">onClick={(e) =&gt; { if (e.target === e.currentTarget) onFermer() }}</span>.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> CA-018 mentionne uniquement le bouton ✕ et le clic sur un autre marker. Le clic sur l'overlay est un ajout UX non prescrit.
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header ecart-header-enhanced">
+        <span class="pill pill-purple">Enrichi</span>
+        <div class="ecart-title">Attributs ARIA complets sur tous les composants</div>
+      </div>
+      <div class="ecart-body">
+        <p>Tous les composants incluent des attributs ARIA non prescrits dans le DF : <span class="code">role="dialog"</span>, <span class="code">aria-modal="true"</span>, <span class="code">role="alert"</span>, <span class="code">role="status"</span>, <span class="code">role="listbox"</span>, <span class="code">role="option"</span>, <span class="code">role="group"</span>, <span class="code">aria-pressed</span> sur les toggles, <span class="code">aria-label</span> sur tous les boutons et inputs.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> ENF-003 demande "contraste élevé WCAG AA" et ENF-004 une "interface responsive tablette". Les attributs ARIA ne sont pas listés — ils dépassent le niveau de détail du DF.
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header ecart-header-enhanced">
+        <span class="pill pill-purple">Enrichi</span>
+        <div class="ecart-title">Deuxième couche TileLayer (OSM France, opacity:0)</div>
+      </div>
+      <div class="ecart-body">
+        <p>Une seconde couche <span class="code">TileLayer</span> pointant vers <span class="code">tile.openstreetmap.fr/osmfr</span> est ajoutée avec <span class="code">opacity: 0</span> comme couche de repli silencieuse. Le composant <span class="code">TileErrorWatcher</span> détecte les erreurs de tuiles et déclenche MSG-006.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> DEC-008 dit <em>"Le fond de carte utilise les tuiles OpenStreetMap avec source secondaire en fallback"</em> et la section 18.1 dit <em>"Leaflet doit être configuré avec une source de tuiles secondaire dès le départ"</em>. Le DF prescrit le principe mais pas l'implémentation (<span class="code">opacity:0</span> + <span class="code">TileErrorWatcher</span> sont des choix d'implémentation).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+  
+  <div class="section">
+    <div class="section-title title-infra">
+      <span>🟡</span> Catégorie 3 — Décisions infrastructure et technique (non couverts par le DF)
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Décision technique</th><th>Ce qui a été fait</th><th>Présence dans le DF</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stack React + Vite + Vitest</td>
+          <td>React 18, Vite 5.4, Vitest 2.1 choisis et configurés</td>
+          <td><span class="pill pill-orange">Absent</span> — Le DF ne prescrit aucun framework ni bundler</td>
+        </tr>
+        <tr>
+          <td>CSS Modules</td>
+          <td>Chaque composant a son propre fichier <span class="code">.module.css</span> avec scoping local</td>
+          <td><span class="pill pill-orange">Absent</span> — Aucune directive de style dans le DF</td>
+        </tr>
+        <tr>
+          <td>User-Agent Nominatim</td>
+          <td>Header <span class="code">User-Agent: PompiersLavalCartographie/0.1</span> + <span class="code">Accept-Language: fr</span> sur toutes les requêtes</td>
+          <td><span class="pill pill-green">Évoqué</span> — Section 9 C-002 dit "Respecter la politique d'usage Nominatim : User-Agent identifiant l'application". Le DF prescrit le principe, pas la valeur exacte.</td>
+        </tr>
+        <tr>
+          <td>Recalibrage coordonnées GPS</td>
+          <td>Toutes les coordonnées JSON décalées de +0.0029 lat / −0.0062 lon pour correspondre à la zone Nominatim réelle de Chomedey, Laval</td>
+          <td><span class="pill pill-orange">Absent</span> — Le DF ne traite pas de la qualité des données GPS. C'est une correction de données, pas une fonctionnalité.</td>
+        </tr>
+        <tr>
+          <td>Versionnement Git + GitHub</td>
+          <td>Dépôt <span class="code">hhamadou/Pompiers-laval-cartographie</span>, branche <span class="code">develop</span>, commits conventionnels</td>
+          <td><span class="pill pill-orange">Absent</span> — Le DF ne prescrit aucune stratégie de versionnement ni de dépôt.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  
+  
+  <div class="section">
+    <div class="section-title title-missing">
+      <span>🔴</span> Catégorie 4 — Exigences du DF présentes mais non couvertes
+    </div>
+    <p style="font-size:13px;color:#57606a;margin-bottom:14px">
+      Ces points sont <strong>dans le DF</strong> mais n'ont pas été implémentés ou vérifiés. À traiter avant validation finale.
+    </p>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header" style="background:#fff5f5;border-bottom:1px solid #fecaca">
+        <span class="pill pill-red">Non couvert</span>
+        <div class="ecart-title">ENF-004 — Interface responsive pour tablette</div>
+      </div>
+      <div class="ecart-body">
+        <p>Le DF impose <em>"Interface responsive — usage terrain chef de caserne"</em>. Le CSS actuel utilise un layout <span class="code">flex-direction: column</span> de base, mais aucune media query ni test sur viewport tablette n'a été réalisé. L'interface n'a pas été validée sur résolution 768px ou 1024px.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> ENF-004 — "Compatibilité tablette — Interface responsive — Usage terrain chef de caserne."
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="ecart-card">
+      <div class="ecart-header" style="background:#fff5f5;border-bottom:1px solid #fecaca">
+        <span class="pill pill-red">Non couvert</span>
+        <div class="ecart-title">EF-009 — Taille de police minimale 14px dans la fiche synthétique</div>
+      </div>
+      <div class="ecart-body">
+        <p>Le DF exige <em>"La fiche doit être lisible sur tablette (taille de police minimale 14px, contraste WCAG AA)"</em>. La fiche utilise <span class="code">font-size: 0.85rem</span> pour certains éléments secondaires (adresse, définitions), ce qui peut descendre sous 14px selon la taille de base du navigateur. Non vérifié formellement.</p>
+        <div class="df-ref">
+          <strong>DF v1.0 :</strong> EF-009 — Exigence applicables à C-005 — "taille de police minimale 14px, contraste WCAG AA".
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section">
+    <div class="section-title" style="background:#f7f8fa;border-left:4px solid #6b7280;padding:8px 14px;border-radius:4px">
+      <span>📋</span> Tableau de synthèse — Décision recommandée
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Catégorie</th><th>Impact</th><th>Recommandation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Autocomplétion frappe</td>
+          <td><span class="pill pill-blue">Ajout</span></td>
+          <td>UX positive — réduit les clics</td>
+          <td>Conserver — documenter dans le DF v1.2</td>
+        </tr>
+        <tr>
+          <td>Bouton ✕ Effacer</td>
+          <td><span class="pill pill-blue">Ajout</span></td>
+          <td>UX positive — remise à zéro rapide</td>
+          <td>Conserver — documenter dans le DF v1.2</td>
+        </tr>
+        <tr>
+          <td>Marker actif distingué</td>
+          <td><span class="pill pill-blue">Ajout</span></td>
+          <td>UX positive — repère visuel en urgence</td>
+          <td>Conserver — documenter dans le DF v1.2</td>
+        </tr>
+        <tr>
+          <td>Fermeture Échap + overlay</td>
+          <td><span class="pill pill-purple">Enrichi</span></td>
+          <td>Accessibilité — conforme WCAG</td>
+          <td>Conserver — conforme à ENF-003</td>
+        </tr>
+        <tr>
+          <td>Attributs ARIA complets</td>
+          <td><span class="pill pill-purple">Enrichi</span></td>
+          <td>Accessibilité — lecteurs d'écran</td>
+          <td>Conserver — conforme à ENF-003</td>
+        </tr>
+        <tr>
+          <td>TileLayer fallback + TileErrorWatcher</td>
+          <td><span class="pill pill-purple">Enrichi</span></td>
+          <td>Robustesse réseau — conforme DEC-008</td>
+          <td>Conserver — prescrit par DEC-008 / section 18.1</td>
+        </tr>
+        <tr>
+          <td>Stack React + Vite + Vitest</td>
+          <td><span class="pill pill-orange">Infra</span></td>
+          <td>Choix structurant validé dès le début</td>
+          <td>Documenter dans le DF v1.2 (section stack)</td>
+        </tr>
+        <tr>
+          <td>Recalibrage GPS</td>
+          <td><span class="pill pill-orange">Infra</span></td>
+          <td>Correction de données — critique</td>
+          <td>Documenter dans le DF v1.2 (section données)</td>
+        </tr>
+        <tr>
+          <td>ENF-004 — Responsive tablette</td>
+          <td><span class="pill pill-red">Non couvert</span></td>
+          <td>Exigence DF non testée</td>
+          <td>À implémenter + tester avant validation</td>
+        </tr>
+        <tr>
+          <td>EF-009 — Police min 14px fiche</td>
+          <td><span class="pill pill-red">Non couvert</span></td>
+          <td>Accessibilité terrain sous-validée</td>
+          <td>Vérifier les <span class="code">font-size</span> dans BuildingSheet.module.css</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  <div class="reco-box">
+    <strong>Prochaine étape recommandée :</strong> Mettre à jour le Dossier Fonctionnel en version 1.2 pour intégrer les 3 nouvelles fonctionnalités (autocomplétion, bouton Effacer, marker actif) comme exigences officielles, et traiter les 2 points non couverts (ENF-004 responsive tablette + EF-009 police min).
+  </div>
+
+  <footer>
+    <p>Made with IBM Bob</p>
+  </footer>
+
+</div>
+</body>
+</html>
