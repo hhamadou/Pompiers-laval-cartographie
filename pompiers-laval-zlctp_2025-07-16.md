@@ -11,10 +11,10 @@ Développer une SPA React (application web monopage) pour le Service de Sécurit
 ## 2. Current Status Snapshot
 
 - **Date/heure :** 2025-07-16 (mis à jour)
-- **Dernière action complétée :** 3 correctifs appliqués et validés — CA-005 (liste déroulante 3 suggestions Nominatim), MSG-006 (bannière tileerror), User-Agent Nominatim. `npm run build` ✅ (88 modules, 0 erreur) + `npm run test` ✅ (10/10 passent).
+- **Dernière action complétée :** Recalibrage des coordonnées GPS de tous les bâtiments du JSON vers la zone Nominatim réelle (centre BAT-001 : `45.5675, -73.7501`). Adresse de test validée : `3030 boul Le Carrefour, Laval`. `npm run build` ✅ + `npm run test` ✅ (10/10).
 - **Environnement validé :** Node.js v24.18.0 / npm v11.16.0 / Windows 10
-- **Prochaine action immédiate :** Lancer `npm run dev` et valider visuellement dans le navigateur → **http://localhost:5173**
-- **État fonctionnel :** Toutes les lacunes connues sont corrigées. Le projet est prêt pour validation visuelle.
+- **Prochaine action immédiate :** Lancer `npm run dev`, saisir `3030 boul Le Carrefour, Laval`, **choisir la suggestion** dans la liste → les markers doivent apparaître.
+- **État fonctionnel :** Prêt pour validation visuelle complète.
 
 ---
 
@@ -114,6 +114,8 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
 13. **Correctif MSG-006** → `MapView.jsx` : composant interne `TileErrorWatcher` écoute `map.on('tileerror')` et affiche `MESSAGES.FOND_CARTE_INDISPONIBLE` en bannière orange en haut de la carte. CSS ajouté.
 
 14. **Correctif User-Agent Nominatim** → `geoEngine.js` : constante `NOMINATIM_HEADERS` partagée (`User-Agent: PompiersLavalCartographie/0.1 (intranet-ssi-laval)` + `Accept-Language: fr`) — conforme à la politique d'usage Nominatim.
+
+15. **Recalibrage coordonnées GPS** → Diagnostic : les coordonnées fictives du JSON ne correspondaient pas à des adresses connues de Nominatim → aucun bâtiment dans le rayon après géocodage. Toutes les coordonnées recalées de +0.0029 lat / -0.0062 lon. Nouvelle zone centrale : `45.5675, -73.7501` (Chomedey, Laval). Adresse de test validée : `3030 boul Le Carrefour, Laval` (1 seul résultat Nominatim, ~350m du centre). Tests unitaires mis à jour.
 
 ---
 
