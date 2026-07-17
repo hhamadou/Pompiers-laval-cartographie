@@ -11,12 +11,12 @@ Développer une SPA React (application web monopage) pour le Service de Sécurit
 ## 2. Current Status Snapshot
 
 - **Date/heure :** 2025-07-16 (dernière mise à jour)
-- **Dernière action complétée :** Rapport d'écarts DF produit (`rapport-d-carts-hors-dossier-fonctionnel.html`). Tâche en cours : rédaction du Dossier Fonctionnel v2.0 intégrant les écarts identifiés.
+- **Dernière action complétée :** DF v2.0 rédigé, sauvegardé et poussé (`12a3670`). Toutes les tâches documentaires sont complètes.
 - **Environnement validé :** Node.js v24.18.0 / npm v11.16.0 / Windows 10
 - **Dépôt GitHub :** `hhamadou/Pompiers-laval-cartographie` — branche active : `develop`
-- **Dernier commit poussé :** `e92c62c` — docs: mise à jour ZLCTP
+- **Dernier commit poussé :** `12a3670` — docs: ajout Dossier Fonctionnel v2.0
 - **État fonctionnel :** ✅ Toutes les capacités C-001→C-005 implémentées et validées. Application fonctionnelle confirmée par l'utilisateur.
-- **Prochaine action :** Finaliser et sauvegarder le DF v2.0, puis traiter ENF-004 (responsive tablette) + EF-009 (police min 14px).
+- **Prochaine action :** Traiter ENF-004 (responsive tablette) + EF-009 (police min 14px dans BuildingSheet).
 
 ---
 
@@ -134,7 +134,7 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
     - 5 décisions infra/technique (stack, CSS Modules, User-Agent, GPS, Git)
     - **2 exigences DF non couvertes** : ENF-004 (responsive tablette) + EF-009 (police min 14px)
 
-20. **Dossier Fonctionnel v2.0 en cours de rédaction** → Intègre les 3 fonctionnalités ajoutées et les enrichissements comme exigences officielles. Sera sauvegardé dans `skills/analyste-fonctionnel/`.
+20. **Dossier Fonctionnel v2.0 finalisé et poussé** → `skills/analyste-fonctionnel/Dossier fonctionnel - Pompiers Laval v2.0.md` (commit `12a3670`). 894 lignes. Intègre : 3 nouvelles décisions (DEC-011/012/013), 1 nouvelle règle transversale (RT-006), 6 nouvelles RA (RA-003/016/017/018/019/020), 1 nouveau paramètre (PARAM_006), 8 nouveaux CA (CA-019→026), 2 nouvelles sections (§19 Stack officielle, §20 ARIA). Statut toutes capacités : ✅ Validé.
 
 ---
 
@@ -276,7 +276,9 @@ Dans `SearchBar.jsx` :
 |---|---|
 | Dépôt | `hhamadou/Pompiers-laval-cartographie` |
 | Branche active | `develop` |
-| Dernier commit | `e92c62c` — docs: mise à jour ZLCTP |
+| Dernier commit | `12a3670` — docs: ajout Dossier Fonctionnel v2.0 |
+| `eede819` | docs: mise à jour ZLCTP + ajout rapport d'écarts hors DF |
+| `e92c62c` | docs: mise à jour ZLCTP |
 | `7a50a7e` | feat: autocomplétion frappe, bouton Effacer, marker actif distingué |
 | `d018bd0` | docs: ajout rapport technique complet |
 | `2b85c98` | chore: mise à jour scénario de test |
@@ -293,7 +295,7 @@ Dans `SearchBar.jsx` :
 
 | Priorité | Étape | Détail |
 |---|---|---|
-| 🔴 En cours | DF v2.0 | Finaliser et sauvegarder dans `skills/analyste-fonctionnel/Dossier fonctionnel - Pompiers Laval v2.0.md` |
+| ✅ Terminé | DF v2.0 | `skills/analyste-fonctionnel/Dossier fonctionnel - Pompiers Laval v2.0.md` — poussé `12a3670` |
 | 🔴 À traiter | ENF-004 — Responsive tablette | Ajouter media queries dans les CSS. Tester sur viewport 768px / 1024px. |
 | 🔴 À traiter | EF-009 — Police min 14px fiche | Vérifier `BuildingSheet.module.css` — certains `font-size: 0.85rem` peuvent descendre sous 14px. |
 | 🟡 Optionnel | Build production + déploiement intranet | `npm run build` → copier `dist/` sur serveur Windows SSI. |
