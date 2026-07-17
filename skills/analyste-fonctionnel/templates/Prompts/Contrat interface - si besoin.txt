@@ -1,0 +1,33 @@
+> Quand utiliser ce prompt "Contrat d'interface" 
+
+Pertinent, mais optionnel
+C'est un outil solide pour les projets où les capacités ont des dépendances complexes entre elles — données JSON transmises, événements déclencheurs, effets de bord sur les entités. Exactement ce que le template v5 ne couvre pas en détail dans les intégrations entre capacités (seulement les APIs externes).
+
+Pertinent seulement si les capacités s'enchaînent avec des données structurées à se passer. Pour un projet simple, c'est de la surspécification.
+
+"à utiliser uniquement pour les capacités ayant des échanges de données structurés avec d'autres capacités".
+
+Pour structurer la communication entre vos capacités sans surcharger le contexte de l'IA, nous allons utiliser la notion de Contrat d'Interface Fonctionnelle. L'objectif est d'intégrer ce bloc à la fin de chaque capacité complexe. Ainsi, l'IA sait exactement comment la capacité interagit avec le reste du système, sans avoir besoin de lire le code ou la spécification des autres modules. Voici le gabarit ultra-condensé à ajouter dans la structure de vos capacités (dans votre fichier de template) :
+
+markdown### X.X Contrat d'Interface (Entrées / Sorties)
+Ce bloc définit les dépendances strictes de cette capacité avec le reste du système.
+
+#### 1. Dépendances amont (Ce que cette capacité REÇOIT)
+- **Source** : `C-00X - [Nom de la capacité émettrice]`
+- **Événement/Déclencheur** : [Ex: Validation du panier / Soumission du formulaire]
+- **Données requises** : 
+  ```json
+  { "id_utilisateur": "string (UUID)", "montant_total": "number (2 décimales)" }
+  ```
+
+#### 2. Dépendances aval (Ce que cette capacité PRODUIT)
+- **Cible** : `C-00Y - [Nom de la capacité réceptrice]`
+- **Événement produit** : [Ex: Paiement accepté / Erreur de provision]
+- **Données transmises** :
+  ```json
+  { "id_transaction": "string", "statut": "SUCCES|ECHEC", "timestamp": "ISO-8601" }
+  ```
+
+#### 3. États partagés (Effets de bord autorisés)
+- [ ] Modifie la table/entité : `Commandes` (Statut passe à 'Payé')
+- [ ] Lit l'état de : `ProfilUtilisateur` (Vérification du pays de facturation)

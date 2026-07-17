@@ -1,0 +1,97 @@
+3. Prompt pour implémenter une capacité
+C'est le prompt que saisit un dev APRÈS que l'IA a lu le dossier fonctionnel ET reçu les infos techniques nécessaires, afin de lui demander de coder.
+Version qui comporte le technique ET le bout contenu dans le dossier Fonctionnel au point 2.2.
+
+Note: pour économiser des tokens, si on se sent en confiance, on peut laisser tomber les portions où on lui demande d'expliquer ce qu'il a compris, dans la mesure où le dev va être capable de valider ça lui-même.
+À la place, au point "Avant de coder", on peut lui dire: Si aucune question bloquante ne subsiste après cette vérification, procède directement à l’implémentation de C-00X.
+
+-------------------------
+
+Nous allons maintenant implémenter uniquement la capacité C-00X - [nom de la capacité].
+
+Contexte disponible :
+- dossier fonctionnel IA ready déjà fourni;
+- notes de pré-lecture du dossier;
+- réponses de cadrage technique fournies par le développeur;
+- architecture, conventions, modèle de données, services, composants, sécurité, messages et tests du projet;
+- fichiers du projet accessibles dans l’environnement.
+
+Utilise comme contexte fonctionnel obligatoire pour C-00X :
+- l’objectif de la capacité;
+- le comportement attendu;
+- les règles applicables RA;
+- les exigences applicables EF;
+- les critères d’acceptation CA;
+- les cas limites;
+- les scénarios Gherkin;
+- les notes d’implémentation;
+- les règles transversales RT;
+- les exigences non fonctionnelles ENF pertinentes;
+- le modèle de données fonctionnel;
+- la matrice de couverture fonctionnelle;
+- les décisions et hypothèses confirmées DEC pertinentes;
+- le vocabulaire fonctionnel.
+
+Utilise comme contexte technique obligatoire tous les éléments ci-dessous dont tu disposes:
+- architecture applicative;
+- langage et framework;
+- structure du projet;
+- fichiers pertinents;
+- modèle de données technique;
+- tables, entités, DTO, schémas ou migrations;
+- APIs, services, repositories ou hooks existants;
+- règles métier déjà implémentées;
+- composants UI existants;
+- sécurité et habilitations;
+- messages, erreurs et mécanismes d’internationalisation;
+- conventions de code;
+- stratégie de tests;
+- données de test disponibles;
+- contraintes de performance, journalisation ou audit si applicables.
+
+Contraintes :
+- implémente uniquement C-00X;
+- ne modifie pas les autres capacités, sauf pour créer les interfaces minimales nécessaires;
+- respecte l’architecture existante;
+- ne duplique pas les règles métier si un service central existe;
+- ne change pas les comportements existants non liés à C-00X;
+- conserve les identifiants fonctionnels RA, EF et CA dans les tests, noms de cas ou commentaires utiles lorsque pertinent;
+- n’invente pas de règle métier absente du dossier;
+- si une information bloquante est manquante ou ambiguë, pose une question avant de coder;
+- si une information non bloquante est manquante, formule une hypothèse minimale, explicite-la, puis avance.
+- si une hypothèse mineure est nécessaire, indique-la explicitement avant de l’appliquer.
+
+Avant de coder :
+1. Résume ta compréhension de C-00X.
+2. Liste les règles RA, exigences EF et critères CA que tu vas couvrir.
+3. Identifie les règles RT, ENF et DEC pertinentes.
+4. Confirme que le contexte technique est suffisant.
+5. Liste les questions bloquantes restantes, s’il y en a.
+6. Propose un bref plan d’implémentation.
+7. Liste les fichiers que tu comptes lire. 
+8. Liste les fichiers que tu comptes modifier. La liste des fichiers à modifier peut être ajustée après lecture du code, mais tout changement doit rester strictement lié à C-00X.
+
+Pendant le codage :
+- fais des changements limités et cohérents avec le code existant;
+- ajoute ou adapte les tests nécessaires;
+- garde les validations métier centralisées lorsque possible;
+- respecte les patterns existants du projet;
+- évite les refontes non demandées.
+
+Après le codage :
+1. Résume les changements réalisés.
+2. Liste les fichiers modifiés.
+3. Fournis une revue de conformité avec :
+   - règles RA couvertes;
+   - exigences EF couvertes;
+   - critères CA couverts;
+   - cas limites couverts;
+   - règles RT/ENF respectées.
+4. Liste les tests ajoutés, modifiés ou exécutés.
+5. Indique les tests qui restent à produire, le cas échéant.
+6. Signale tout écart, hypothèse, risque ou dette technique résiduelle.
+7. Propose la prochaine capacité logique à implémenter, sans la coder.
+
+Voici la capacité à implémenter :
+C-00X - [nom de la capacité]
+

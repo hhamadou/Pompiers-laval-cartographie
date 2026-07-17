@@ -1,0 +1,68 @@
+2. Prompt de réponses du Dev suite au 1er prompt
+Ce sont les réponses aux questions que l'IA a posées suite au 1er prompt.
+Resoumettre à l'IA si celle-ci a encore des questions, jusqu'à temps qu'elle n'en ait plus.
+
+Convention de réponse du développeur si celui-ci ne peut pas fournir de réponse :
+- INCONNU : l’information n’est pas encore connue.
+- NON FOURNI : l’information existe peut-être, mais ne sera pas fournie à l’IA.
+- HORS PÉRIMÈTRE IA : cette partie sera conçue ou codée manuellement par le développeur.
+- À DÉFINIR AVEC L’IA : l’IA peut proposer une approche, à valider par le développeur.
+----------------------------------
+
+Voici les réponses à tes questions de cadrage.
+
+Architecture :
+[...]
+
+Langage/framework :
+[...]
+
+Structure du projet :
+[...]
+
+Modèle de données :
+[...]
+
+Services/APIs :
+[...]
+
+Composants UI :
+[...]
+
+Sécurité/habilitations :
+[...]
+
+Messages/erreurs :
+[...]
+
+Tests :
+[...]
+
+Conventions :
+[...]
+
+Données de test :
+[...]
+
+Lorsque l’information est absente, j’utiliserai l’un des statuts suivants :
+- INCONNU : l’information n’est pas encore connue;
+- NON FOURNI : l’information existe peut-être, mais ne sera pas fournie à l’IA;
+- HORS PÉRIMÈTRE IA : cette partie sera conçue ou codée manuellement par le développeur;
+- À DÉFINIR AVEC L’IA : l’IA peut proposer une approche, à valider par le développeur;
+- SANS OBJET : l’information ne s’applique pas à cette capacité ou à ce projet.
+
+À partir des réponses que je t'ai données fais ceci :
+- croise mes réponses avec ta checklist initiale;
+- si je te réponds qu’un élément que tu me demandes est NON FOURNI / HORS PÉRIMÈTRE, adapte ta stratégie d’implémentation en conséquence, sans redemander cette information sauf si elle devient strictement bloquante.
+- dis moi si le contexte est suffisant pour avancer proprement;
+- dis moi quelles capacités peuvent être commencées;
+- dis moi quelles capacités nécessitent encore des précisions;
+- dis moi quelle capacité tu recommandes d’implémenter en premier.
+
+Si tu estimes que le contexte est suffisant pour poursuivre sans risque majeur, reporte toi à la Règle de décision à la section 16 du dossier fonctionnel pour déterminer si d'autres documents doivent être produits. 
+Si d'autres documents doivent être produits selon cette règle, produis les, en fonction:
+- de ce qui est décrit dans le dossier fonctionnel;
+- des renseignements techniques que je t’ai fournis;
+- des contraintes, absences ou éléments hors périmètre que j’ai explicitement indiqués.
+
+Ne code toujours rien.

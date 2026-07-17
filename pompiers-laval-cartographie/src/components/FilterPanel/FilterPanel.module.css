@@ -1,0 +1,60 @@
+.filterPanel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.toggleGroup {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.toggleBtn {
+  padding: 0.3rem 0.7rem;
+  border: 2px solid #ccc;
+  border-radius: 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.actif {
+  color: #fff;
+  opacity: 1;
+}
+
+.inactif {
+  background-color: #f0f0f0;
+  color: #999;
+  border-color: #ccc;
+  opacity: 0.6;
+}
+
+.select {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  cursor: pointer;
+  max-width: 220px;
+}
+
+.select:focus {
+  outline: 2px solid #cc0000;
+  outline-offset: 1px;
+}

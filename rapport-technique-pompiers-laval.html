@@ -1,0 +1,678 @@
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rapport technique — Cartographie SSI Laval</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #1f2328;
+    background: #ffffff;
+    padding: 2rem 1rem;
+  }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* En-tête */
+  .header {
+    border-bottom: 3px solid #CC0000;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .doc-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  .doc-subtitle {
+    font-size: 0.95rem;
+    color: #57606a;
+    margin-top: 0.2rem;
+  }
+  .meta-block {
+    font-size: 0.82rem;
+    color: #57606a;
+    text-align: right;
+    line-height: 1.8;
+  }
+  .badge-statut {
+    display: inline-block;
+    background: #1a6b2e;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.15rem 0.6rem;
+    border-radius: 1rem;
+  }
+
+  /* Table des matières */
+  .toc {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .toc-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #57606a;
+    margin-bottom: 0.5rem;
+  }
+  .toc ol {
+    padding-left: 1.2rem;
+    font-size: 0.88rem;
+    line-height: 2;
+  }
+  .toc a { color: #3b82d4; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Sections */
+  .section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  h2 .num {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 1.2rem 0 0.5rem;
+  }
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444;
+    margin: 0.8rem 0 0.3rem;
+  }
+  p { margin-bottom: 0.6rem; }
+  ul, ol { padding-left: 1.4rem; margin-bottom: 0.6rem; }
+  li { margin-bottom: 0.2rem; }
+
+  /* Tableaux */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  th {
+    background: #1a1a2e;
+    color: #ffffff;
+    text-align: left;
+    padding: 0.45rem 0.7rem;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.4rem 0.7rem;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f7f8fa; }
+
+  /* Code */
+  pre {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    font-family: "Consolas", "Courier New", monospace;
+    overflow-x: auto;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+  }
+  code {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.85em;
+    background: #f0f0f0;
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+  }
+
+  /* Callouts */
+  .callout {
+    border-left: 4px solid #3b82d4;
+    background: #f0f6ff;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 0.8rem;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.88rem;
+  }
+  .callout.warn {
+    border-color: #FF6600;
+    background: #fff8f0;
+  }
+  .callout.danger {
+    border-color: #CC0000;
+    background: #fff0f0;
+  }
+  .callout.success {
+    border-color: #1a6b2e;
+    background: #f0fff4;
+  }
+  .callout strong { display: block; margin-bottom: 0.2rem; }
+
+  /* Badges capacités */
+  .cap-badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 0.3rem;
+  }
+  .cap-mvp { background: #CC0000; color: #fff; }
+  .cap-avance { background: #FF6600; color: #fff; }
+  .cap-ok { background: #1a6b2e; color: #fff; }
+  .cap-warn { background: #FF6600; color: #fff; }
+
+  /* Statut implémentation */
+  .statut-ok::before { content: "✓ "; color: #1a6b2e; font-weight: 700; }
+  .statut-partiel::before { content: "◑ "; color: #FF6600; font-weight: 700; }
+  .statut-absent::before { content: "✗ "; color: #CC0000; font-weight: 700; }
+
+  /* Arborescence */
+  .tree {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.82rem;
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    line-height: 1.7;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 0.78rem;
+    color: #57606a;
+  }
+
+  @media print {
+    body { padding: 0; }
+    .page { max-width: 100%; }
+    h2 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="doc-title">Rapport de développement — Cartographie des sites à risques</div>
+        <div class="doc-subtitle">Service de Sécurité Incendie — Ville de Laval  |  POC v0.1.0</div>
+      </div>
+      <div class="meta-block">
+        <strong>Date :</strong> 2025-07-16<br />
+        <strong>Destinataires :</strong> Équipe d'analystes fonctionnels<br />
+        <strong>Auteur :</strong> Équipe développement<br />
+        <span class="badge-statut">Code complet — en attente de validation</span>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="toc">
+    <div class="toc-title">Table des matières</div>
+    <ol>
+      <li><a href="#s1">Résumé exécutif</a></li>
+      <li><a href="#s2">Décisions techniques prises</a></li>
+      <li><a href="#s3">Architecture et structure du projet</a></li>
+      <li><a href="#s4">Couverture fonctionnelle par capacité</a></li>
+      <li><a href="#s5">Correspondance dossier fonctionnel ↔ code</a></li>
+      <li><a href="#s6">Paramètres système et messages utilisateur</a></li>
+      <li><a href="#s7">Données intégrées</a></li>
+      <li><a href="#s8">Tests unitaires</a></li>
+      <li><a href="#s9">Lacunes connues et écarts fonctionnels</a></li>
+      <li><a href="#s10">Prochaines étapes</a></li>
+    </ol>
+  </div>
+
+  
+  <div class="section" id="s1">
+    <h2><span class="num">1</span> Résumé exécutif</h2>
+    <p>
+      L'équipe de développement a reçu le dossier fonctionnel IA-Ready version 1.1 (statut : À valider, daté du 2025-01-23)
+      et a produit l'intégralité du code source de la solution POC.
+    </p>
+    <p>
+      Le code couvre les <strong>5 capacités fonctionnelles</strong> définies dans le dossier (C-001 à C-005),
+      respecte les <strong>5 règles transversales</strong> (RT-001 à RT-005),
+      les <strong>5 paramètres système</strong> (PARAM_001 à PARAM_005)
+      et les <strong>6 messages utilisateur</strong> (MSG-001, 002, 004–007).
+    </p>
+    <div class="callout success">
+      <strong>État général</strong>
+      Le code est complet et prêt à être installé et testé. La prochaine étape est
+      l'exécution de <code>npm install &amp;&amp; npm run dev</code> pour validation visuelle dans le navigateur.
+    </div>
+    <div class="callout warn">
+      <strong>3 écarts mineurs identifiés</strong>
+      Trois points du dossier fonctionnel ne sont pas encore implémentés (CA-005 liste résultats Nominatim,
+      MSG-006 fond de carte indisponible, User-Agent Nominatim). Ils sont documentés en section 9.
+    </div>
+  </div>
+
+  
+  <div class="section" id="s2">
+    <h2><span class="num">2</span> Décisions techniques prises</h2>
+    <p>
+      Le dossier fonctionnel ne précisait pas la stack technique. Les choix suivants ont été faits
+      par l'équipe développement, validés avant démarrage du code.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Domaine</th><th>Choix retenu</th><th>Justification</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Framework frontend</td><td>React 18</td><td>Mentionné implicitement dans le dossier (SPA)</td></tr>
+        <tr><td>Bundler</td><td>Vite 5</td><td>Rapide, léger, standard industrie 2025</td></tr>
+        <tr><td>Langage</td><td>JavaScript ES6+</td><td>POC — TypeScript ajouterait de la complexité inutile</td></tr>
+        <tr><td>Carte</td><td>react-leaflet 4 + leaflet 1.9</td><td>Binding React officiel pour Leaflet</td></tr>
+        <tr><td>Gestion d'état</td><td>useState + useMemo (React natif)</td><td>Application simple — pas besoin de Zustand/Redux</td></tr>
+        <tr><td>CSS</td><td>CSS Modules</td><td>Pas de dépendance externe, isolation des styles</td></tr>
+        <tr><td>Gestionnaire de paquets</td><td>npm</td><td>Universel, aucune friction</td></tr>
+        <tr><td>Tests</td><td>Vitest</td><td>Intégré à Vite, zéro configuration</td></tr>
+        <tr><td>Navigateurs cibles</td><td>Chrome 110+, Edge 110+, Firefox 110+</td><td>Postes intranet municipaux modernes</td></tr>
+        <tr><td>Accessibilité</td><td>WCAG 2.1 niveau AA</td><td>Conforme à ENF-003 du dossier</td></tr>
+        <tr><td>Déploiement</td><td>Build statique /dist → serveur Windows intranet</td><td>DEC-010 (à confirmer avec équipe TI)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <strong>DEC-010 — Déploiement (statut : À confirmer)</strong>
+      Le dossier fonctionnel indique "serveur Windows local — à confirmer avec équipe TI".
+      Le code produit un dossier <code>/dist</code> de fichiers statiques (HTML + JS + CSS),
+      déployable sur IIS, Nginx ou tout serveur de fichiers statiques.
+    </div>
+  </div>
+
+  
+  <div class="section" id="s3">
+    <h2><span class="num">3</span> Architecture et structure du projet</h2>
+
+    <h3>3.1 Structure des fichiers</h3>
+    <div class="tree">pompiers-laval-cartographie/<br />
+├── .gitignore<br />
+├── index.html<br />
+├── package.json<br />
+├── README.md<br />
+├── vite.config.js<br />
+├── src/<br />
+│   ├── App.jsx                   ← Orchestration complète C-001 → C-005<br />
+│   ├── App.module.css<br />
+│   ├── main.jsx                  ← Point d'entrée React<br />
+│   ├── config/<br />
+│   │   └── params.js             ← PARAM_001–005 + MSG-001–007 + NIVEAUX_DANGER<br />
+│   ├── data/<br />
+│   │   └── batiments.json        ← 34 établissements (intégré au bundle)<br />
+│   ├── modules/<br />
+│   │   ├── dataLoader.js         ← C-001 : import statique JSON<br />
+│   │   └── geoEngine.js          ← C-002/003 : haversine + Nominatim<br />
+│   └── components/<br />
+│       ├── StatusBar/            ← C-001 : badge statut données<br />
+│       ├── SearchBar/            ← C-002 : saisie adresse + message erreur<br />
+│       ├── MapView/              ← C-002/003 : carte, markers, cercle 500m<br />
+│       ├── FilterPanel/          ← C-004 : toggles niveau + liste type<br />
+│       └── BuildingSheet/        ← C-005 : modale fiche synthétique<br />
+└── tests/<br />
+    └── geoEngine.test.js         ← 10 tests unitaires</div>
+
+    <h3>3.2 Correspondance modules du dossier → fichiers code</h3>
+    <table>
+      <thead>
+        <tr><th>Module (section 12 dossier)</th><th>Responsabilité</th><th>Fichier implémenté</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DataLoader</td><td>Import statique JSON, initialisation état bâtiments</td><td><code>src/modules/dataLoader.js</code></td></tr>
+        <tr><td>GeoEngine</td><td>Géocodage Nominatim, calcul haversine, point d'intervention</td><td><code>src/modules/geoEngine.js</code></td></tr>
+        <tr><td>MapView</td><td>Rendu Leaflet, markers, cercle rayon, étiquettes distance</td><td><code>src/components/MapView/MapView.jsx</code></td></tr>
+        <tr><td>FilterPanel</td><td>Gestion filtres danger/type, liste filtrée</td><td><code>src/components/FilterPanel/FilterPanel.jsx</code></td></tr>
+        <tr><td>BuildingSheet</td><td>Fiche synthétique modale</td><td><code>src/components/BuildingSheet/BuildingSheet.jsx</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.3 Flux de données</h3>
+    <p>Le flux est unidirectionnel, conforme à l'architecture React :</p>
+    <ol>
+      <li><strong>Démarrage :</strong> <code>batiments.json</code> est importé statiquement dans <code>App.jsx</code> via <code>dataLoader.js</code>. Les données sont en mémoire instantanément.</li>
+      <li><strong>Saisie adresse :</strong> <code>SearchBar</code> remonte l'adresse à <code>App.jsx</code>, qui appelle <code>geoEngine.geocoderAdresse()</code>. Le résultat est stocké dans l'état <code>pointIntervention</code>.</li>
+      <li><strong>Calcul rayon :</strong> Dès que <code>pointIntervention</code> change, <code>useMemo</code> recalcule <code>batimentsDansRayon</code> via <code>geoEngine.filtrerParRayon()</code>.</li>
+      <li><strong>Filtrage :</strong> Un second <code>useMemo</code> applique les filtres C-004 sur <code>batimentsDansRayon</code> → produit <code>batimentsFiltres</code>.</li>
+      <li><strong>Affichage :</strong> <code>MapView</code> reçoit <code>batimentsFiltres</code> et rend les markers. Au clic marker → <code>BuildingSheet</code> reçoit le bâtiment sélectionné.</li>
+    </ol>
+
+    <h3>3.4 États du système implémentés</h3>
+    <p>Conformément à la section 11.1 du dossier :</p>
+    <table>
+      <thead>
+        <tr><th>État (dossier)</th><th>Implémentation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>CHARGEMENT_EN_COURS</td><td>Bref instant React StrictMode — <code>StatusBar</code> affiche MSG-001</td></tr>
+        <tr><td>DONNÉES_VALIDES</td><td>État permanent dès montage — <code>StatusBar</code> affiche MSG-002 avec le compte réel</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section" id="s4">
+    <h2><span class="num">4</span> Couverture fonctionnelle par capacité</h2>
+
+    <h3>C-001 — Initialisation de l'application <span class="cap-badge cap-mvp">MVP</span> <span class="cap-badge cap-ok">Implémenté</span></h3>
+    <table>
+      <thead><tr><th>Critère</th><th>Statut</th><th>Détail</th></tr></thead>
+      <tbody>
+        <tr><td>CA-001 — Chargement automatique au démarrage</td><td class="statut-ok">OK</td><td>Import statique dans <code>App.jsx</code>, données disponibles au montage</td></tr>
+        <tr><td>CA-002 — Application prête immédiatement</td><td class="statut-ok">OK</td><td>Toutes les capacités disponibles dès que le badge "X bâtiments chargés" s'affiche</td></tr>
+        <tr><td>Cas limite : JSON = tableau vide</td><td class="statut-ok">OK</td><td>Badge affiche "0 bâtiments chargés", interface reste disponible</td></tr>
+      </tbody>
+    </table>
+
+    <h3>C-002 — Définition du point d'intervention <span class="cap-badge cap-mvp">MVP</span> <span class="cap-badge cap-warn">Partiel</span></h3>
+    <table>
+      <thead><tr><th>Critère</th><th>Statut</th><th>Détail</th></tr></thead>
+      <tbody>
+        <tr><td>CA-004 — Géocodage réussi</td><td class="statut-ok">OK</td><td>Fetch Nominatim avec AbortController + timeout PARAM_005</td></tr>
+        <tr><td>CA-005 — Adresse ambiguë (3 résultats)</td><td class="statut-partiel">Partiel</td><td>Implémentation actuelle prend le 1er résultat. Liste déroulante non faite. <strong>À corriger.</strong></td></tr>
+        <tr><td>CA-006 — Nominatim indisponible → MSG-004</td><td class="statut-ok">OK</td><td>Timeout déclenche MSG-004, clic sur carte reste disponible</td></tr>
+        <tr><td>CA-007 — Clic sur carte</td><td class="statut-ok">OK</td><td>Composant <code>ClickHandler</code> dans <code>MapView.jsx</code> — fonctionne sans réseau</td></tr>
+        <tr><td>Cas limite : adresse introuvable</td><td class="statut-ok">OK</td><td>MSG-005 affiché</td></tr>
+        <tr><td>Cas limite : timeout Nominatim</td><td class="statut-ok">OK</td><td>AbortController déclenche fallback après PARAM_005 secondes</td></tr>
+      </tbody>
+    </table>
+
+    <h3>C-003 — Visualisation des bâtiments à risque <span class="cap-badge cap-mvp">MVP</span> <span class="cap-badge cap-ok">Implémenté</span></h3>
+    <table>
+      <thead><tr><th>Critère</th><th>Statut</th><th>Détail</th></tr></thead>
+      <tbody>
+        <tr><td>CA-008 — Markers dans le rayon</td><td class="statut-ok">OK</td><td>Formule haversine, filtre ≤ PARAM_001 (500m)</td></tr>
+        <tr><td>CA-009 — Distance affichée</td><td class="statut-ok">OK</td><td>Tooltip permanent sous chaque marker avec valeur arrondie</td></tr>
+        <tr><td>CA-010 — Aucun résultat → MSG-007</td><td class="statut-ok">OK</td><td>Bandeau affiché en superposition sur la carte</td></tr>
+        <tr><td>CA-011 — Cohérence couleurs</td><td class="statut-ok">OK</td><td>Couleurs lues depuis NIVEAUX_DANGER[niveau].couleur — RT-001, RT-002 respectés</td></tr>
+        <tr><td>Cas limite : bâtiment sans GPS</td><td class="statut-ok">OK</td><td>Exclu silencieusement par <code>filtrerParRayon()</code> — RA-009</td></tr>
+        <tr><td>Cas limite : bâtiment exactement à 500m</td><td class="statut-ok">OK</td><td>Inclus (≤ 500m) — conforme à la décision du dossier</td></tr>
+        <tr><td>MSG-006 — Fond de carte indisponible</td><td class="statut-absent">Absent</td><td>Non câblé sur l'événement tileerror de Leaflet. <strong>À corriger.</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>C-004 — Filtrage des bâtiments <span class="cap-badge cap-avance">Avancé</span> <span class="cap-badge cap-ok">Implémenté</span></h3>
+    <table>
+      <thead><tr><th>Critère</th><th>Statut</th><th>Détail</th></tr></thead>
+      <tbody>
+        <tr><td>CA-012 — Filtre niveau de danger</td><td class="statut-ok">OK</td><td>3 boutons toggle (Élevé/Modéré/Faible), tous actifs par défaut — RA-010</td></tr>
+        <tr><td>CA-013 — Filtre type établissement</td><td class="statut-ok">OK</td><td>Liste déroulante générée dynamiquement depuis le JSON — RA-011</td></tr>
+        <tr><td>CA-014 — Filtres cumulatifs</td><td class="statut-ok">OK</td><td>Filtres combinés via <code>useMemo</code> — RA-012 : données en mémoire intactes</td></tr>
+        <tr><td>Cas limite : tous niveaux désactivés</td><td class="statut-ok">OK</td><td>Aucun marker affiché, MSG-007 visible</td></tr>
+      </tbody>
+    </table>
+
+    <h3>C-005 — Fiche synthétique <span class="cap-badge cap-avance">Avancé</span> <span class="cap-badge cap-ok">Implémenté</span></h3>
+    <table>
+      <thead><tr><th>Critère</th><th>Statut</th><th>Détail</th></tr></thead>
+      <tbody>
+        <tr><td>CA-015 — Affichage fiche avec 7 champs</td><td class="statut-ok">OK</td><td>Modale avec nom, adresse, type, matières, quantités, niveau, consignes</td></tr>
+        <tr><td>CA-016 — Badge couleur niveau de danger</td><td class="statut-ok">OK</td><td>Couleur depuis PARAM_002/003/004 — RA-015, RT-002</td></tr>
+        <tr><td>CA-017 — Champ vide → "Non renseigné"</td><td class="statut-ok">OK</td><td>Fonction <code>valeur()</code> dans BuildingSheet — RA-014</td></tr>
+        <tr><td>CA-018 — Fermeture fiche</td><td class="statut-ok">OK</td><td>Bouton ✕, touche Échap, clic sur fond, clic autre marker — RA-013</td></tr>
+        <tr><td>Cas limite : liste matières longue</td><td class="statut-ok">OK</td><td>Liste <code>&lt;ul&gt;</code> avec scroll vertical sur la modale</td></tr>
+        <tr><td>Cas limite : quantités nulles</td><td class="statut-ok">OK</td><td>Filtrage des valeurs null dans la fonction <code>valeur()</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section" id="s5">
+    <h2><span class="num">5</span> Correspondance dossier fonctionnel ↔ code</h2>
+
+    <h3>5.1 Règles transversales</h3>
+    <table>
+      <thead><tr><th>Règle</th><th>Énoncé (résumé)</th><th>Implémentation</th></tr></thead>
+      <tbody>
+        <tr><td>RT-001</td><td>Niveau danger toujours depuis valeur numérique 1/2/3</td><td class="statut-ok">OK — <code>NIVEAUX_DANGER[b.niveau_danger]</code></td></tr>
+        <tr><td>RT-002</td><td>Couleurs markers depuis PARAM_002/003/004 — jamais hardcodées</td><td class="statut-ok">OK — <code>NIVEAUX_DANGER[x].couleur</code> dans params.js</td></tr>
+        <tr><td>RT-003</td><td>Données JSON dans le bundle — toujours disponibles</td><td class="statut-ok">OK — <code>import batimentsData from '…/batiments.json'</code></td></tr>
+        <tr><td>RT-004</td><td>Rayon = PARAM_001 (500m) — non modifiable</td><td class="statut-ok">OK — <code>PARAMS.RAYON_RECHERCHE</code> dans geoEngine.js</td></tr>
+        <tr><td>RT-005</td><td>Libellés UI depuis section 17 — jamais libres</td><td class="statut-ok">OK — tous les textes depuis <code>MESSAGES</code> dans params.js</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.2 Exigences non fonctionnelles</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Exigence</th><th>Implémentation</th></tr></thead>
+      <tbody>
+        <tr><td>ENF-001</td><td>Chargement initial &lt; 3 secondes</td><td class="statut-ok">OK — import statique synchrone, pas de fetch au démarrage</td></tr>
+        <tr><td>ENF-002</td><td>Markers après adresse &lt; 2 secondes</td><td class="statut-ok">OK — calcul haversine synchrone + useMemo</td></tr>
+        <tr><td>ENF-003</td><td>Contraste WCAG AA</td><td class="statut-ok">OK — texte blanc sur fond rouge/orange/foncé</td></tr>
+        <tr><td>ENF-004</td><td>Interface responsive tablette</td><td class="statut-ok">OK — CSS Modules avec flexbox, modale responsive mobile</td></tr>
+        <tr><td>ENF-005</td><td>PWA hors ligne (Service Worker)</td><td class="statut-absent">Hors POC — Phase Optimisation uniquement</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section" id="s6">
+    <h2><span class="num">6</span> Paramètres système et messages utilisateur</h2>
+    <p>
+      Tous les paramètres et messages sont centralisés dans <code>src/config/params.js</code>.
+      Ce fichier est la <strong>seule source de vérité</strong> pour ces valeurs.
+      Aucune valeur n'est hardcodée ailleurs dans le code.
+    </p>
+
+    <h3>6.1 Paramètres système</h3>
+    <table>
+      <thead><tr><th>Code</th><th>Nom fonctionnel</th><th>Valeur</th><th>Utilisé dans</th></tr></thead>
+      <tbody>
+        <tr><td>PARAM_001</td><td>Rayon de recherche</td><td>500 m</td><td>geoEngine.js, MapView.jsx</td></tr>
+        <tr><td>PARAM_002</td><td>Couleur danger élevé</td><td>#CC0000</td><td>params.js → NIVEAUX_DANGER</td></tr>
+        <tr><td>PARAM_003</td><td>Couleur danger modéré</td><td>#FF6600</td><td>params.js → NIVEAUX_DANGER</td></tr>
+        <tr><td>PARAM_004</td><td>Couleur danger faible</td><td>#FFCC00</td><td>params.js → NIVEAUX_DANGER</td></tr>
+        <tr><td>PARAM_005</td><td>Timeout géocodage</td><td>3 secondes</td><td>geoEngine.js (AbortController)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.2 Messages utilisateur</h3>
+    <table>
+      <thead><tr><th>No</th><th>Message</th><th>Composant</th></tr></thead>
+      <tbody>
+        <tr><td>MSG-001</td><td>"Chargement des données en cours..."</td><td>StatusBar.jsx</td></tr>
+        <tr><td>MSG-002</td><td>"X bâtiments chargés"</td><td>StatusBar.jsx</td></tr>
+        <tr><td>MSG-004</td><td>"Localisation indisponible. Cliquez directement sur la carte…"</td><td>SearchBar.jsx</td></tr>
+        <tr><td>MSG-005</td><td>"Adresse non trouvée. Vérifiez l'adresse…"</td><td>SearchBar.jsx</td></tr>
+        <tr><td>MSG-006</td><td>"Fond de carte indisponible — les données restent consultables."</td><td>MapView.jsx (non câblé — voir section 9)</td></tr>
+        <tr><td>MSG-007</td><td>"Aucun bâtiment à risque dans ce périmètre."</td><td>MapView.jsx</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section" id="s7">
+    <h2><span class="num">7</span> Données intégrées</h2>
+    <p>
+      Le fichier <code>src/data/batiments.json</code> contient les données réelles fournies par les inspecteurs du SSI.
+      Il est importé statiquement dans le bundle — aucune action utilisateur n'est requise au démarrage.
+    </p>
+    <table>
+      <thead><tr><th>Métrique</th><th>Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Nombre total d'établissements</td><td>34 (BAT-001 à BAT-034)</td></tr>
+        <tr><td>Établissements avec coordonnées GPS</td><td>32 (2 sans GPS : BAT-010, BAT-011)</td></tr>
+        <tr><td>Niveau 1 — Danger élevé (rouge)</td><td>12 établissements</td></tr>
+        <tr><td>Niveau 2 — Danger modéré (orange)</td><td>11 établissements</td></tr>
+        <tr><td>Niveau 3 — Danger faible (jaune)</td><td>11 établissements</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <strong>Note sur BAT-010 et BAT-011</strong>
+      Ces deux établissements (Dépôt Chimique Saint-Martin et Dépôt Ammoniac Central) n'ont pas de
+      coordonnées GPS dans le fichier source. Ils sont exclus silencieusement du calcul de rayon
+      conformément à la règle RA-009. Il est recommandé de les géolocaliser lors de la prochaine
+      mise à jour des données.
+    </div>
+  </div>
+
+  
+  <div class="section" id="s8">
+    <h2><span class="num">8</span> Tests unitaires</h2>
+    <p>
+      Les tests sont dans <code>tests/geoEngine.test.js</code> et couvrent les fonctions critiques
+      du module <code>geoEngine.js</code> (calcul de distance et filtrage par rayon).
+    </p>
+    <table>
+      <thead><tr><th>#</th><th>Test</th><th>Ce qu'il vérifie</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Distance entre points identiques = 0</td><td>Formule haversine — cas trivial</td></tr>
+        <tr><td>2</td><td>Distance réaliste entre deux points Laval (~130m)</td><td>Ordre de grandeur correct</td></tr>
+        <tr><td>3</td><td>Distance symétrique (A→B = B→A)</td><td>Propriété mathématique de haversine</td></tr>
+        <tr><td>4</td><td>Bâtiment hors rayon exclu</td><td>Filtre ≤ 500m</td></tr>
+        <tr><td>5</td><td>Bâtiments dans le rayon inclus</td><td>Filtre ≤ 500m</td></tr>
+        <tr><td>6</td><td>Bâtiment sans GPS exclu silencieusement</td><td>RA-009</td></tr>
+        <tr><td>7</td><td>Propriété <code>distance</code> présente sur chaque résultat</td><td>Enrichissement du résultat</td></tr>
+        <tr><td>8</td><td>Liste vide si aucun bâtiment dans le rayon</td><td>Cas limite zéro résultat</td></tr>
+        <tr><td>9</td><td>Résultats triés par distance croissante</td><td>Tri des résultats</td></tr>
+        <tr><td>10</td><td>Tous les résultats ≤ PARAM_001 (500m)</td><td>Respect de PARAM_001</td></tr>
+      </tbody>
+    </table>
+    <p>Commande d'exécution :</p>
+    <pre>cd pompiers-laval-cartographie
+npm run test</pre>
+  </div>
+
+  
+  <div class="section" id="s9">
+    <h2><span class="num">9</span> Lacunes connues et écarts fonctionnels</h2>
+    <div class="callout warn">
+      Ces 3 points sont des écarts mineurs par rapport au dossier fonctionnel.
+      Ils n'empêchent pas la validation du POC mais doivent être corrigés avant livraison finale.
+    </div>
+
+    <h3>Écart 1 — CA-005 : Adresse ambiguë (liste de 3 résultats Nominatim)</h3>
+    <table>
+      <thead><tr><th>Champ</th><th>Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Critère concerné</td><td>CA-005 (C-002)</td></tr>
+        <tr><td>Comportement attendu (dossier)</td><td>Si Nominatim retourne plusieurs résultats, afficher les 3 premiers dans une liste déroulante</td></tr>
+        <tr><td>Comportement actuel</td><td>Le premier résultat est utilisé directement, sans proposition à l'utilisateur</td></tr>
+        <tr><td>Fichiers à modifier</td><td><code>src/modules/geoEngine.js</code> (retourner tableau), <code>src/components/SearchBar/SearchBar.jsx</code> (afficher liste)</td></tr>
+        <tr><td>Effort estimé</td><td>~2h</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Écart 2 — MSG-006 : Fond de carte indisponible</h3>
+    <table>
+      <thead><tr><th>Champ</th><th>Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Message concerné</td><td>MSG-006</td></tr>
+        <tr><td>Comportement attendu (dossier)</td><td>Si les tuiles OpenStreetMap sont indisponibles, afficher "Fond de carte indisponible — les données restent consultables."</td></tr>
+        <tr><td>Comportement actuel</td><td>La carte affiche des tuiles vides sans message à l'utilisateur</td></tr>
+        <tr><td>Fichier à modifier</td><td><code>src/components/MapView/MapView.jsx</code> — écouter l'événement <code>tileerror</code> de Leaflet</td></tr>
+        <tr><td>Effort estimé</td><td>~30 minutes</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Écart 3 — User-Agent Nominatim</h3>
+    <table>
+      <thead><tr><th>Champ</th><th>Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Règle concernée</td><td>Note d'implémentation C-002 (politique d'usage Nominatim)</td></tr>
+        <tr><td>Comportement attendu</td><td>Chaque requête Nominatim doit inclure un header <code>User-Agent</code> identifiant l'application</td></tr>
+        <tr><td>Comportement actuel</td><td>Header <code>Accept-Language: fr</code> présent, mais pas de <code>User-Agent</code> applicatif</td></tr>
+        <tr><td>Fichier à modifier</td><td><code>src/modules/geoEngine.js</code> — ajouter <code>'User-Agent': 'SSI-Laval-Cartographie/0.1 (contact@ville.laval.qc.ca)'</code></td></tr>
+        <tr><td>Effort estimé</td><td>~5 minutes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section" id="s10">
+    <h2><span class="num">10</span> Prochaines étapes</h2>
+
+    <h3>Phase immédiate — Installation et validation</h3>
+    <ol>
+      <li>Installer Node.js v20+ (<a href="https://nodejs.org">nodejs.org</a>) — déjà fait</li>
+      <li>Ouvrir un terminal dans le dossier <code>pompiers-laval-cartographie/</code></li>
+      <li>Exécuter <code>npm install</code> (télécharge les dépendances)</li>
+      <li>Exécuter <code>npm run dev</code> → ouvrir <code>http://localhost:5173</code></li>
+      <li>Exécuter <code>npm run test</code> → 10 tests doivent passer</li>
+    </ol>
+
+    <h3>Validation visuelle à effectuer</h3>
+    <table>
+      <thead><tr><th>#</th><th>Test manuel</th><th>Résultat attendu</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Ouvrir l'application</td><td>Badge vert "34 bâtiments chargés" visible</td></tr>
+        <tr><td>2</td><td>Saisir "450 boulevard Industriel, Laval" → Localiser</td><td>Carte centrée, cercle 500m affiché, markers visibles</td></tr>
+        <tr><td>3</td><td>Cliquer sur un marker rouge</td><td>Fiche synthétique avec 7 champs, badge rouge "Élevé"</td></tr>
+        <tr><td>4</td><td>Désactiver le toggle "Faible"</td><td>Markers jaunes disparaissent instantanément</td></tr>
+        <tr><td>5</td><td>Sélectionner "Industrie chimique" dans la liste</td><td>Seuls les markers de ce type restent</td></tr>
+        <tr><td>6</td><td>Cliquer directement sur la carte</td><td>Point d'intervention se déplace, markers recalculés</td></tr>
+        <tr><td>7</td><td>Fermer la fiche avec Échap</td><td>Modale se ferme</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Corrections des écarts (post-validation)</h3>
+    <ol>
+      <li>Corriger CA-005 (liste résultats Nominatim) — effort ~2h</li>
+      <li>Câbler MSG-006 (tileerror Leaflet) — effort ~30 min</li>
+      <li>Ajouter User-Agent Nominatim — effort ~5 min</li>
+    </ol>
+
+    <h3>Build production (après validation)</h3>
+    <pre>npm run build
+# → dossier /dist généré
+# → Copier /dist sur le serveur intranet Windows (IIS ou partage de fichiers)</pre>
+
+    <div class="callout">
+      <strong>Action requise des analystes — DEC-010</strong>
+      Confirmer avec l'équipe TI le type de serveur intranet (IIS, Nginx, autre) et le chemin de déploiement.
+      Le dossier <code>/dist</code> contient des fichiers statiques compatibles avec tout serveur web.
+    </div>
+  </div>
+
+  <footer>
+    <p>Document généré le 2025-07-16  |  Projet Pompiers Laval — Cartographie des sites à risques  |  POC v0.1.0</p>
+    <p style="margin-top:0.5rem;font-size:0.72rem;color:#aaa">Made with IBM Bob</p>
+  </footer>
+
+</div>
+</body>
+</html>

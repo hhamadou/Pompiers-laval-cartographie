@@ -1,0 +1,83 @@
+1. Prompt pour Dev AVANT de coder
+Ce prompt permet au Dev de présenter un dossier fonctionnel .md à l'IA et de lui demander quelles sont les infos dont elle a besoin pour commencer.
+Si on a déjà des renseignements à fournir, comme par exemple: 
+
+langage et framework;
+architecture générale;
+conventions de code;
+structure des dossiers;
+modèle de données connu;
+APIs ou services existants;
+contraintes de sécurité;
+tests disponibles;
+dépendances importantes.
+
+on les fournit dans la section Contexte, à la place de [Voici les renseignements dont je dispose actuellement: FOURNIR ICI LES RENSEIGNEMENTS DÉJÀ CONNUS]. Sinon, supprimer cette portion.
+--------------------------------------------
+
+Je vais te fournir un dossier fonctionnel IA ready en Markdown. Je veux que tu m’aides à implémenter les capacités une par une, sans coder tout de suite.
+
+Ton premier travail est de lire le dossier, comprendre sa structure, puis me dire exactement de quoi tu as besoin pour pouvoir coder proprement chaque capacité.
+
+Contexte :
+- Je suis le développeur responsable de l’intégration technique.
+- Je peux te fournir plusieurs éléments tels: l’architecture, le langage, le framework, les conventions du projet, les tables, les entités, les services, les APIs, les composants UI, les dépendances et les tests existants, selon ce dont je dispose en ce moment. [Voici les renseignements dont je dispose actuellement: FOURNIR ICI LES RENSEIGNEMENTS DÉJÀ CONNUS]
+- Je veux éviter le code approximatif, les règles métier dupliquées, les écarts fonctionnels et la dette technique.
+- Je veux procéder capacité par capacité, en commençant par la capacité que tu recommanderas, sauf si le dossier fonctionnel impose déjà un ordre prioritaire.
+
+Consignes :
+1. Lis d’abord le dossier fonctionnel complet.
+2. Explique-moi :
+- le périmètre fonctionnel;
+- les capacités identifiées;
+- les dépendances entre capacités;
+- l’ordre d’implémentation recommandé;
+- les zones fonctionnelles à risque;
+- les informations techniques dont tu auras besoin pour coder les capacités une par une.
+3. Ne code rien pour l’instant.
+4. Ne suppose pas les détails techniques absents du dossier. Si une information manque, classe-la comme question ouverte ou hypothèse à valider.
+5. Distingue clairement :
+- ce qui est explicitement indiqué dans le dossier;
+- ce que tu infères raisonnablement;
+- ce qui doit être confirmé.
+6. Produis une checklist précise des informations techniques dont tu as besoin avant de coder.
+7. Regroupe cette checklist par catégories :
+   - architecture applicative;
+   - langage/framework;
+   - structure du projet;
+   - modèle de données;
+   - APIs/services;
+   - règles métier existantes;
+   - composants UI;
+   - sécurité/habilitations;
+   - messages/erreurs;
+   - tests;
+   - conventions de code;
+   - données de test.
+8. Pour chaque information demandée, explique pourquoi elle est nécessaire.
+9. Pour chaque information demandée, indique son niveau de nécessité :
+   - BLOQUANT : l’information est indispensable avant de coder proprement la capacité concernée;
+   - UTILE : l’information améliore la qualité, la cohérence ou l’intégration, mais n’empêche pas nécessairement de commencer;
+   - NON FOURNI / HORS PÉRIMÈTRE : si le dossier spécifie qu'une portion de la checklist du point 7 est non fournie ou hors périmètre, ou encore si le développeur répond qu’un élément de la checklist est NON FOURNI / HORS PÉRIMÈTRE, adapte ta stratégie d’implémentation en conséquence, sans redemander cette information sauf si elle devient strictement bloquante.
+10. Identifie les capacités qui peuvent probablement être codées rapidement avec peu de contexte.
+11. Identifie les capacités qui nécessitent plus de contexte technique ou métier.
+12. Signale les ambiguïtés, contradictions ou trous fonctionnels détectés dans le dossier.
+13. Propose une stratégie d’implémentation capacité par capacité.
+14. Termine en me proposant :
+   - la première capacité à implémenter;
+   - les fichiers, schémas, services ou concepts que je devrais te fournir pour cette première capacité;
+   - les questions prioritaires auxquelles je devrais répondre avant de commencer.
+
+Format attendu :
+- Résumé du dossier
+- Capacités identifiées
+- Dépendances entre capacités
+- Ordre d’implémentation recommandé
+- Checklist technique par catégorie
+- Questions à poser au développeur
+- Capacités prêtes vs capacités à clarifier
+- Risques et ambiguïtés
+- Recommandation de première capacité
+
+Voici le dossier fonctionnel :
+[COLLER LE DOSSIER MARKDOWN ICI]
