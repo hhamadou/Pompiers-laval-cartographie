@@ -134,7 +134,12 @@ export default function MapView({ pointIntervention, batimentsFiltres, onClicCar
                 fillOpacity: 0.85,
                 weight: 2,
               }}
-              eventHandlers={{ click: () => onClicMarker(batiment) }}
+              eventHandlers={{
+                click: (e) => {
+                  e.originalEvent.stopPropagation()
+                  onClicMarker(batiment)
+                },
+              }}
             >
               {/* Étiquette de distance — RA-007 */}
               <Tooltip permanent direction="bottom" offset={[0, 8]} className={styles.distanceLabel}>
