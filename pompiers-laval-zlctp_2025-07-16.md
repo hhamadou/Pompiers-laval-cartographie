@@ -1,4 +1,4 @@
-# ZLCTP Handoff Package — Pompiers Laval Cartographie — Généré le 2025-07-16
+# ZLCTP Handoff Package — Pompiers Laval Cartographie — Mis à jour le 2025-07-16
 
 ---
 
@@ -10,11 +10,12 @@ Développer une SPA React (application web monopage) pour le Service de Sécurit
 
 ## 2. Current Status Snapshot
 
-- **Date/heure :** 2025-07-16 (mis à jour)
-- **Dernière action complétée :** Recalibrage des coordonnées GPS de tous les bâtiments du JSON vers la zone Nominatim réelle (centre BAT-001 : `45.5675, -73.7501`). Adresse de test validée : `3030 boul Le Carrefour, Laval`. `npm run build` ✅ + `npm run test` ✅ (10/10).
+- **Date/heure :** 2025-07-16 (dernière mise à jour)
+- **Dernière action complétée :** Ajout de 3 améliorations hors DF (autocomplétion frappe, bouton Effacer, marker actif distingué). `npm run build` ✅ (88 modules, 0 erreur) + `npm run test` ✅ (10/10). Poussé sur `origin/develop` (commit `7a50a7e`).
 - **Environnement validé :** Node.js v24.18.0 / npm v11.16.0 / Windows 10
-- **Prochaine action immédiate :** Lancer `npm run dev`, saisir `3030 boul Le Carrefour, Laval`, **choisir la suggestion** dans la liste → les markers doivent apparaître.
-- **État fonctionnel :** Prêt pour validation visuelle complète.
+- **Dépôt GitHub :** `hhamadou/Pompiers-laval-cartographie` — branche active : `develop`
+- **État fonctionnel :** ✅ Toutes les capacités C-001→C-005 implémentées et validées. Application fonctionnelle confirmée par l'utilisateur.
+- **Prochaine action :** Traiter les 2 exigences DF non encore couvertes (ENF-004 responsive tablette + EF-009 police min 14px dans BuildingSheet).
 
 ---
 
@@ -47,7 +48,7 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
 - **React 18** + **Vite 5** (bundler)
 - **JavaScript ES6+** (pas TypeScript — POC)
 - **react-leaflet 4** + **leaflet 1.9**
-- **useState + useContext** (pas de Zustand/Redux)
+- **useState + useMemo** (pas de Zustand/Redux)
 - **CSS Modules**
 - **npm** comme gestionnaire de paquets
 - **Vitest** pour les tests unitaires
@@ -117,6 +118,17 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
 
 15. **Recalibrage coordonnées GPS** → Diagnostic : les coordonnées fictives du JSON ne correspondaient pas à des adresses connues de Nominatim → aucun bâtiment dans le rayon après géocodage. Toutes les coordonnées recalées de +0.0029 lat / -0.0062 lon. Nouvelle zone centrale : `45.5675, -73.7501` (Chomedey, Laval). Adresse de test validée : `3030 boul Le Carrefour, Laval` (1 seul résultat Nominatim, ~350m du centre). Tests unitaires mis à jour.
 
+16. **L'utilisateur confirme que tout fonctionne** → Validation visuelle complète OK. Application conforme au DF.
+
+17. **3 améliorations hors DF demandées et implémentées** (commit `7a50a7e`) :
+    - **Autocomplétion frappe** : `SearchBar.jsx` — `useEffect` + `useRef` debounce 300ms, déclenche `onLocaliser` à partir de 4 caractères. Le submit manuel annule le debounce en cours.
+    - **Bouton ✕ Effacer** : bouton positionné à l'intérieur du champ (position absolute), visible dès qu'il y a du texte. Appelle `handleReinitialiser()` dans `App.jsx` → remet tout l'état à zéro (point, markers, fiche, suggestions, erreurs).
+    - **Marker actif distingué** : prop `batimentActifId` passée de `App.jsx` vers `MapView.jsx`. Quand `estActif` : radius 14 (vs 10), contour blanc `#ffffff` (vs couleur danger), weight 4 (vs 2), étiquette fond sombre. `fillColor` inchangé → couleur de danger toujours lisible. Pas de nuisance aux markers voisins.
+
+18. **Rapport technique HTML généré et poussé** → `rapport-technique-pompiers-laval-cartographie.html` (commit `d018bd0`)
+
+19. **Rapport d'écarts DF généré** → Identifie 3 ajouts, 4 enrichissements, 5 décisions infra, et **2 exigences DF non couvertes** : ENF-004 (responsive tablette) + EF-009 (police min 14px dans BuildingSheet).
+
 ---
 
 ## 5. Hard Requirements & Non-Negotiables
@@ -141,11 +153,12 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
 
 ## 6. Soft Preferences & Observed Style
 
-- L'utilisateur est direct et bref : "go", "on va oublier le projet des recettes"
+- L'utilisateur est direct et bref : "go", "pousse le code", "c'est parfait"
 - Il fait confiance aux propositions techniques sans négocier les détails
 - Il travaille en français
 - Il est pragmatique : POC d'abord, pas d'over-engineering
 - Apprécie les résumés structurés avec tableaux
+- Vérifie régulièrement que le ZLCTP est à jour
 
 ---
 
@@ -173,12 +186,13 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
 **Chemin :** `donnees_etablissements.json` (copié dans `src/data/batiments.json`)
 **Contenu :** 34 établissements de Laval avec id, nom, adresse, type_etablissement, matieres_dangereuses, quantites, niveau_danger (1/2/3), consignes, latitude, longitude
 **Note :** Certains bâtiments ont latitude/longitude null (BAT-010, BAT-011) → exclus silencieusement par geoEngine.js
+**Note GPS :** Toutes les coordonnées recalées de +0.0029 lat / -0.0062 lon — zone Chomedey, Laval
 
 ---
 
 ## 8. Code produit — État exact de chaque fichier
 
-### Structure complète du projet généré
+### Structure complète du projet
 
 ```
 pompiers-laval-cartographie/
@@ -188,89 +202,92 @@ pompiers-laval-cartographie/
 ├── README.md
 ├── vite.config.js
 ├── src/
-│   ├── App.jsx                          ← Orchestration C-001→C-005
+│   ├── App.jsx                          ← Orchestration C-001→C-005 + handleReinitialiser
 │   ├── App.module.css
 │   ├── main.jsx
 │   ├── config/
 │   │   └── params.js                    ← PARAM_001–005, MSG-001–007, NIVEAUX_DANGER
 │   ├── data/
-│   │   └── batiments.json               ← 34 établissements Laval
+│   │   └── batiments.json               ← 34 établissements Laval (coordonnées recalibrées)
 │   ├── modules/
 │   │   ├── dataLoader.js                ← C-001 : import statique JSON
-│   │   └── geoEngine.js                 ← C-002/003 : haversine + Nominatim + CA-005 suggestions + User-Agent
+│   │   └── geoEngine.js                 ← C-002/003 : haversine + Nominatim + suggestions + User-Agent
 │   └── components/
 │       ├── StatusBar/
 │       │   ├── StatusBar.jsx            ← C-001 : badge statut
 │       │   └── StatusBar.module.css
 │       ├── SearchBar/
-│       │   ├── SearchBar.jsx            ← C-002 + CA-005 : saisie adresse + liste déroulante suggestions
-│       │   └── SearchBar.module.css     ← styles suggestions ajoutés
+│       │   ├── SearchBar.jsx            ← C-002 + CA-005 + autocomplétion debounce + bouton ✕ Effacer
+│       │   └── SearchBar.module.css     ← .inputWrapper, .boutonEffacer ajoutés
 │       ├── MapView/
-│       │   ├── MapView.jsx              ← C-002/003 + MSG-006 : carte Leaflet, markers, cercle, TileErrorWatcher
-│       │   └── MapView.module.css       ← style .messageFondCarte ajouté
+│       │   ├── MapView.jsx              ← C-002/003 + MSG-006 + marker actif (batimentActifId)
+│       │   └── MapView.module.css       ← .distanceLabelActif ajouté
 │       ├── FilterPanel/
 │       │   ├── FilterPanel.jsx          ← C-004 : toggles danger + type
 │       │   └── FilterPanel.module.css
 │       └── BuildingSheet/
-│           ├── BuildingSheet.jsx        ← C-005 : modale 7 champs
+│           ├── BuildingSheet.jsx        ← C-005 : modale 7 champs + fermeture Échap + overlay
 │           └── BuildingSheet.module.css
 └── tests/
     └── geoEngine.test.js                ← 10 tests unitaires haversine + filtrage
 ```
 
-### Lacunes connues — ✅ Toutes corrigées
+### État de chaque amélioration
 
-1. **CA-005 ✅** : `geoEngine.js` expose `geocoderAdresseSuggestions()` (limit:3). `SearchBar.jsx` affiche une liste déroulante si >1 résultat. `App.jsx` câble la sélection via `handleSelectionnerSuggestion`.
+| Fonctionnalité | Fichiers modifiés | Statut |
+|---|---|---|
+| CA-005 liste déroulante suggestions | `geoEngine.js`, `SearchBar.jsx`, `App.jsx` | ✅ |
+| MSG-006 bannière tileerror | `MapView.jsx`, `MapView.module.css` | ✅ |
+| User-Agent Nominatim | `geoEngine.js` | ✅ |
+| Recalibrage GPS | `batiments.json`, `geoEngine.test.js` | ✅ |
+| Autocomplétion frappe (debounce 300ms) | `SearchBar.jsx` | ✅ |
+| Bouton ✕ Effacer + reset total | `SearchBar.jsx`, `SearchBar.module.css`, `App.jsx` | ✅ |
+| Marker actif visuellement distingué | `MapView.jsx`, `MapView.module.css`, `App.jsx` | ✅ |
 
-2. **MSG-006 ✅** : `MapView.jsx` contient `TileErrorWatcher` qui écoute l'événement `tileerror` de Leaflet et affiche `MESSAGES.FOND_CARTE_INDISPONIBLE` en bannière.
+### Détail technique — marker actif
 
-3. **User-Agent Nominatim ✅** : Constante `NOMINATIM_HEADERS` ajoutée dans `geoEngine.js` avec `User-Agent: PompiersLavalCartographie/0.1 (intranet-ssi-laval)`, partagée par les deux fonctions de géocodage.
+Dans `MapView.jsx`, quand `batiment.id === batimentActifId` :
+- `radius` : 14 (vs 10 normal)
+- `color` (contour SVG) : `#ffffff` blanc (vs couleur danger)
+- `fillColor` : couleur danger — **inchangée** (identificabilité préservée)
+- `weight` : 4 (vs 2 normal)
+- Étiquette distance : classe `.distanceLabelActif` (fond `#1a1a2e`, texte blanc, gras)
+
+### Détail technique — autocomplétion
+
+Dans `SearchBar.jsx` :
+- `useEffect` sur `adresse` avec `debounceRef` (useRef)
+- Déclenche `onLocaliser(trimmed)` après **300ms** si `trimmed.length >= 4`
+- Le submit manuel (`handleSubmit`) annule le debounce en cours via `clearTimeout`
+- `handleEffacer` : efface le champ + annule debounce + appelle `onReinitialiser()`
 
 ---
 
-## 9. Prochaines étapes (dans l'ordre)
+## 9. Git — État du dépôt
 
-### ✅ Toutes les étapes techniques sont complétées
-
-| Étape | Statut |
+| Élément | Valeur |
 |---|---|
-| `npm install` — dépendances | ✅ |
-| `npm run build` — 88 modules, 0 erreur | ✅ |
-| `npm run test` — 10/10 passent | ✅ |
-| README.md — instructions PowerShell | ✅ |
-| CA-005 — liste déroulante 3 suggestions | ✅ |
-| MSG-006 — bannière tileerror | ✅ |
-| User-Agent Nominatim | ✅ |
-
-### Étape immédiate — Validation visuelle
-
-```powershell
-cd C:\Users\XXHamadou\.bob\playground\pompiers-laval-cartographie
-npm run dev
-# → Ouvrir http://localhost:5173 dans le navigateur
-```
-
-> Si `npm` n'est pas reconnu, fermer et rouvrir le terminal PowerShell après l'installation de Node.js.
-
-**Checklist de validation :**
-- [ ] L'application s'ouvre et affiche "34 bâtiments chargés"
-- [ ] Saisir "450 boulevard Industriel, Laval" → carte se centre, cercle 500m s'affiche
-- [ ] Des markers colorés apparaissent dans le rayon
-- [ ] Si Nominatim retourne >1 résultat → liste déroulante apparaît sous le champ (CA-005)
-- [ ] Cliquer sur un marker → fiche synthétique s'ouvre avec les 7 champs
-- [ ] Toggles de filtres fonctionnent
-- [ ] Clic sur la carte positionne le point d'intervention
-
-### Étape suivante — Build production (déploiement intranet)
-
-```powershell
-npm run build
-# → dossier /dist à déposer sur le serveur Windows intranet
-```
+| Dépôt | `hhamadou/Pompiers-laval-cartographie` |
+| Branche active | `develop` |
+| Dernier commit | `7a50a7e` — feat: autocomplétion frappe, bouton Effacer, marker actif distingué |
+| Commit précédent | `d018bd0` — docs: ajout rapport technique complet |
+| Commit précédent | `2b85c98` — chore: mise à jour scénario de test |
+| Remote | `https://github.com/hhamadou/Pompiers-laval-cartographie.git` |
 
 ---
 
-## 10. Pour reprendre ce travail avec un autre LLM
+## 10. Prochaines étapes recommandées
+
+| Priorité | Étape | Détail |
+|---|---|---|
+| 🔴 À traiter | ENF-004 — Responsive tablette | Ajouter media queries dans les CSS. Tester sur viewport 768px / 1024px. |
+| 🔴 À traiter | EF-009 — Police min 14px fiche | Vérifier `BuildingSheet.module.css` — certains `font-size: 0.85rem` peuvent descendre sous 14px. |
+| 🟡 Optionnel | Mettre à jour DF en v1.2 | Intégrer les 3 nouvelles fonctionnalités hors DF comme exigences officielles. |
+| 🟡 Optionnel | Build production + déploiement intranet | `npm run build` → copier `dist/` sur serveur Windows SSI. |
+
+---
+
+## 11. Pour reprendre ce travail avec un autre LLM
 
 Colle ce fichier en entier et dis : **"Voici un ZLCTP Handoff Package. Lis-le intégralement et poursuis le travail."**
 
