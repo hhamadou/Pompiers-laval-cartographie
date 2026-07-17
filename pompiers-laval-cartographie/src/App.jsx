@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import styles from './App.module.css'
 
 import { chargerBatiments } from './modules/dataLoader.js'
-import { geocoderAdresse, filtrerParRayon } from './modules/geoEngine.js'
+import { geocoderAdresseSuggestions, filtrerParRayon } from './modules/geoEngine.js'
 import { MESSAGES } from './config/params.js'
 
 import StatusBar from './components/StatusBar/StatusBar.jsx'
@@ -28,6 +28,7 @@ export default function App() {
   const [geocodageEnCours, setGeocodageEnCours] = useState(false)
   const [messageErreur, setMessageErreur] = useState('')
   const [batimentSelectionne, setBatimentSelectionne] = useState(null)
+  const [suggestions, setSuggestions] = useState([])  // CA-005
 
   // ─── C-004 : État des filtres — RA-010 : tous actifs par défaut ──────────
   const [filtresNiveau, setFiltresNiveau] = useState({ 1: true, 2: true, 3: true })
@@ -50,22 +51,35 @@ export default function App() {
     })
   }, [batimentsDansRayon, filtresNiveau, filtreType])
 
-  // ─── C-002 : Géocodage de l'adresse saisie ───────────────────────────────
+  // ─── C-002 + CA-005 : Géocodage de l'adresse saisie ─────────────────────
   async function handleLocaliser(adresse) {
     setGeocodageEnCours(true)
     setMessageErreur('')
     setBatimentSelectionne(null)
+    setSuggestions([])
 
-    const coords = await geocoderAdresse(adresse)
+    const resultats = await geocoderAdresseSuggestions(adresse)
 
     setGeocodageEnCours(false)
 
-    if (!coords) {
-      // Vérifier si c'est un timeout ou une adresse non trouvée
+    if (!resultats || resultats.length === 0) {
       setMessageErreur(MESSAGES.ADRESSE_NON_TROUVEE)
       return
     }
-    setPointIntervention(coords)
+    if (resultats.length === 1) {
+      // Un seul résultat — on positionne directement
+      setPointIntervention(resultats[0])
+    } else {
+      // Plusieurs résultats — CA-005 : liste déroulante
+      setSuggestions(resultats)
+    }
+  }
+
+  // ─── CA-005 : Sélection d'une suggestion dans la liste déroulante ─────────
+  function handleSelectionnerSuggestion(suggestion) {
+    setSuggestions([])
+    setBatimentSelectionne(null)
+    setPointIntervention({ lat: suggestion.lat, lon: suggestion.lon })
   }
 
   // ─── C-002 : Clic direct sur la carte (fallback Nominatim — DEC-007) ─────
@@ -93,9 +107,11 @@ export default function App() {
         nombreBatiments={TOUS_BATIMENTS.length}
       />
 
-      {/* C-002 — Saisie de l'adresse d'intervention */}
+      {/* C-002 + CA-005 — Saisie de l'adresse d'intervention */}
       <SearchBar
         onLocaliser={handleLocaliser}
+        onSelectionner={handleSelectionnerSuggestion}
+        suggestions={suggestions}
         chargement={geocodageEnCours}
         messageErreur={messageErreur}
       />

@@ -10,14 +10,11 @@ Développer une SPA React (application web monopage) pour le Service de Sécurit
 
 ## 2. Current Status Snapshot
 
-- **Date/heure :** 2025-07-16
-- **Dernière action complétée :** Génération complète du code source du projet (toutes les capacités C-001 à C-005 codées, tests unitaires écrits, structure de fichiers créée dans `pompiers-laval-cartographie/`)
-- **Prochaine action immédiate :** L'utilisateur vient de réinstaller Node.js. Il doit **fermer et rouvrir Bob/terminal**, puis exécuter dans le dossier `pompiers-laval-cartographie/` :
-  ```
-  npm install
-  npm run dev
-  ```
-  Ensuite valider visuellement l'application dans le navigateur et exécuter `npm run test`.
+- **Date/heure :** 2025-07-16 (mis à jour)
+- **Dernière action complétée :** 3 correctifs appliqués et validés — CA-005 (liste déroulante 3 suggestions Nominatim), MSG-006 (bannière tileerror), User-Agent Nominatim. `npm run build` ✅ (88 modules, 0 erreur) + `npm run test` ✅ (10/10 passent).
+- **Environnement validé :** Node.js v24.18.0 / npm v11.16.0 / Windows 10
+- **Prochaine action immédiate :** Lancer `npm run dev` et valider visuellement dans le navigateur → **http://localhost:5173**
+- **État fonctionnel :** Toutes les lacunes connues sont corrigées. Le projet est prêt pour validation visuelle.
 
 ---
 
@@ -106,7 +103,17 @@ L'utilisateur est **développeur** (pas analyste). Il a reçu un dossier fonctio
 
 8. **L'utilisateur installe Node.js** → Doit rouvrir le terminal pour que PATH soit rechargé
 
-9. **L'utilisateur demande ce ZLCTP** avant de redémarrer → En cours de génération
+9. **L'utilisateur demande ce ZLCTP** avant de redémarrer → Généré
+
+10. **Validation technique complète** → `npm run build` ✅ (88 modules, 0 erreur) + `npm run test` ✅ (10/10) sur Node v24.18.0 / npm v11.16.0
+
+11. **Instructions de lancement documentées** → README.md mis à jour avec le chemin complet PowerShell, la version Node testée, et le tip de réouverture du terminal
+
+12. **Correctif CA-005** → `geoEngine.js` : nouvelle fonction `geocoderAdresseSuggestions()` (limit:3, retourne `[{lat,lon,libelle}]`). `App.jsx` : affiche la liste si >1 résultat, positionne directement si 1. `SearchBar.jsx` : liste `<ul>` cliquable sous le champ. CSS ajouté.
+
+13. **Correctif MSG-006** → `MapView.jsx` : composant interne `TileErrorWatcher` écoute `map.on('tileerror')` et affiche `MESSAGES.FOND_CARTE_INDISPONIBLE` en bannière orange en haut de la carte. CSS ajouté.
+
+14. **Correctif User-Agent Nominatim** → `geoEngine.js` : constante `NOMINATIM_HEADERS` partagée (`User-Agent: PompiersLavalCartographie/0.1 (intranet-ssi-laval)` + `Accept-Language: fr`) — conforme à la politique d'usage Nominatim.
 
 ---
 
@@ -188,17 +195,17 @@ pompiers-laval-cartographie/
 │   │   └── batiments.json               ← 34 établissements Laval
 │   ├── modules/
 │   │   ├── dataLoader.js                ← C-001 : import statique JSON
-│   │   └── geoEngine.js                 ← C-002/003 : haversine + Nominatim
+│   │   └── geoEngine.js                 ← C-002/003 : haversine + Nominatim + CA-005 suggestions + User-Agent
 │   └── components/
 │       ├── StatusBar/
 │       │   ├── StatusBar.jsx            ← C-001 : badge statut
 │       │   └── StatusBar.module.css
 │       ├── SearchBar/
-│       │   ├── SearchBar.jsx            ← C-002 : saisie adresse
-│       │   └── SearchBar.module.css
+│       │   ├── SearchBar.jsx            ← C-002 + CA-005 : saisie adresse + liste déroulante suggestions
+│       │   └── SearchBar.module.css     ← styles suggestions ajoutés
 │       ├── MapView/
-│       │   ├── MapView.jsx              ← C-002/003 : carte Leaflet, markers, cercle
-│       │   └── MapView.module.css
+│       │   ├── MapView.jsx              ← C-002/003 + MSG-006 : carte Leaflet, markers, cercle, TileErrorWatcher
+│       │   └── MapView.module.css       ← style .messageFondCarte ajouté
 │       ├── FilterPanel/
 │       │   ├── FilterPanel.jsx          ← C-004 : toggles danger + type
 │       │   └── FilterPanel.module.css
@@ -209,49 +216,54 @@ pompiers-laval-cartographie/
     └── geoEngine.test.js                ← 10 tests unitaires haversine + filtrage
 ```
 
-### Lacunes connues à compléter (basses priorités pour la POC)
+### Lacunes connues — ✅ Toutes corrigées
 
-1. **CA-005 non implémenté** : Si Nominatim retourne plusieurs résultats, le dossier prévoit d'afficher les 3 premiers dans une liste déroulante. L'implémentation actuelle prend le premier résultat seulement. À corriger dans `SearchBar.jsx` + `geoEngine.js`.
+1. **CA-005 ✅** : `geoEngine.js` expose `geocoderAdresseSuggestions()` (limit:3). `SearchBar.jsx` affiche une liste déroulante si >1 résultat. `App.jsx` câble la sélection via `handleSelectionnerSuggestion`.
 
-2. **MSG-006 non câblé** : Le message "Fond de carte indisponible" n'est pas encore déclenché. Nécessite un handler sur l'événement `tileerror` de Leaflet dans `MapView.jsx`.
+2. **MSG-006 ✅** : `MapView.jsx` contient `TileErrorWatcher` qui écoute l'événement `tileerror` de Leaflet et affiche `MESSAGES.FOND_CARTE_INDISPONIBLE` en bannière.
 
-3. **User-Agent Nominatim** : La politique d'usage Nominatim exige un User-Agent identifiant l'application. À ajouter dans `geoEngine.js` dans les headers du fetch.
+3. **User-Agent Nominatim ✅** : Constante `NOMINATIM_HEADERS` ajoutée dans `geoEngine.js` avec `User-Agent: PompiersLavalCartographie/0.1 (intranet-ssi-laval)`, partagée par les deux fonctions de géocodage.
 
 ---
 
 ## 9. Prochaines étapes (dans l'ordre)
 
-### Étape immédiate — Après réouverture du terminal
-```bash
-cd pompiers-laval-cartographie
-npm install
+### ✅ Toutes les étapes techniques sont complétées
+
+| Étape | Statut |
+|---|---|
+| `npm install` — dépendances | ✅ |
+| `npm run build` — 88 modules, 0 erreur | ✅ |
+| `npm run test` — 10/10 passent | ✅ |
+| README.md — instructions PowerShell | ✅ |
+| CA-005 — liste déroulante 3 suggestions | ✅ |
+| MSG-006 — bannière tileerror | ✅ |
+| User-Agent Nominatim | ✅ |
+
+### Étape immédiate — Validation visuelle
+
+```powershell
+cd C:\Users\XXHamadou\.bob\playground\pompiers-laval-cartographie
 npm run dev
-# Ouvrir http://localhost:5173 dans le navigateur
+# → Ouvrir http://localhost:5173 dans le navigateur
 ```
 
-### Étape 2 — Validation visuelle
+> Si `npm` n'est pas reconnu, fermer et rouvrir le terminal PowerShell après l'installation de Node.js.
+
+**Checklist de validation :**
 - [ ] L'application s'ouvre et affiche "34 bâtiments chargés"
 - [ ] Saisir "450 boulevard Industriel, Laval" → carte se centre, cercle 500m s'affiche
 - [ ] Des markers colorés apparaissent dans le rayon
+- [ ] Si Nominatim retourne >1 résultat → liste déroulante apparaît sous le champ (CA-005)
 - [ ] Cliquer sur un marker → fiche synthétique s'ouvre avec les 7 champs
 - [ ] Toggles de filtres fonctionnent
 - [ ] Clic sur la carte positionne le point d'intervention
 
-### Étape 3 — Tests unitaires
-```bash
-npm run test
-# → 10 tests doivent passer
-```
+### Étape suivante — Build production (déploiement intranet)
 
-### Étape 4 — Corrections mineures si nécessaires
-- Implémenter la liste des 3 résultats Nominatim (CA-005)
-- Câbler MSG-006 sur tileerror Leaflet
-- Ajouter User-Agent Nominatim
-
-### Étape 5 — Build production
-```bash
+```powershell
 npm run build
-# → dossier /dist à déposer sur le serveur intranet Windows
+# → dossier /dist à déposer sur le serveur Windows intranet
 ```
 
 ---

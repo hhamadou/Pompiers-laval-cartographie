@@ -3,21 +3,29 @@ import styles from './SearchBar.module.css'
 import { MESSAGES } from '../../config/params.js'
 
 /**
- * SearchBar — C-002
+ * SearchBar — C-002, CA-005
  * Champ de saisie d'adresse d'intervention + bouton Localiser.
- * Référence : section 9 C-002, composants d'interface.
+ * Si plusieurs résultats Nominatim, affiche une liste déroulante (max 3).
+ * Référence : section 9 C-002, CA-005.
  *
  * @param {object}   props
- * @param {Function} props.onLocaliser  Appelé avec l'adresse saisie
- * @param {boolean}  props.chargement   True pendant le géocodage
- * @param {string}   props.messageErreur Message d'erreur à afficher (ou '')
+ * @param {Function} props.onLocaliser     Appelé avec l'adresse saisie (recherche)
+ * @param {Function} props.onSelectionner  Appelé avec {lat, lon} quand l'utilisateur choisit une suggestion
+ * @param {Array}    props.suggestions     Tableau de {lat, lon, libelle} retourné par geoEngine
+ * @param {boolean}  props.chargement      True pendant le géocodage
+ * @param {string}   props.messageErreur   Message d'erreur à afficher (ou '')
  */
-export default function SearchBar({ onLocaliser, chargement, messageErreur }) {
+export default function SearchBar({ onLocaliser, onSelectionner, suggestions = [], chargement, messageErreur }) {
   const [adresse, setAdresse] = useState('')
 
   function handleSubmit(e) {
     e.preventDefault()
     if (adresse.trim()) onLocaliser(adresse.trim())
+  }
+
+  function handleChoixSuggestion(suggestion) {
+    setAdresse(suggestion.libelle)
+    onSelectionner(suggestion)
   }
 
   return (
@@ -41,6 +49,23 @@ export default function SearchBar({ onLocaliser, chargement, messageErreur }) {
           {chargement ? '...' : '📍 Localiser'}
         </button>
       </form>
+
+      {/* CA-005 — Liste déroulante si Nominatim retourne plusieurs résultats */}
+      {suggestions.length > 1 && (
+        <ul className={styles.suggestions} role="listbox" aria-label="Résultats de géocodage">
+          {suggestions.map((s, i) => (
+            <li
+              key={i}
+              className={styles.suggestionItem}
+              role="option"
+              onClick={() => handleChoixSuggestion(s)}
+            >
+              {s.libelle}
+            </li>
+          ))}
+        </ul>
+      )}
+
       {messageErreur && (
         <p className={styles.messageErreur} role="alert">
           {messageErreur}

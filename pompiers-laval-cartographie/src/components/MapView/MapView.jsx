@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, CircleMarker, Circle, Tooltip, useMap, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import styles from './MapView.module.css'
@@ -33,6 +33,25 @@ function ClickHandler({ onClic }) {
 }
 
 /**
+ * Composant interne : écoute l'événement tileerror de Leaflet.
+ * Déclenche MSG-006 si au moins une tuile ne peut pas se charger.
+ * Référence : MSG-006, DEC-008.
+ */
+function TileErrorWatcher({ onTileError }) {
+  const map = useMap()
+  useEffect(() => {
+    function handleTileError() {
+      onTileError()
+    }
+    map.on('tileerror', handleTileError)
+    return () => {
+      map.off('tileerror', handleTileError)
+    }
+  }, [map, onTileError])
+  return null
+}
+
+/**
  * MapView — C-002, C-003, C-004
  * Rendu Leaflet, markers colorés, cercle de rayon 500m, étiquettes de distance.
  * Référence : section 12 du dossier fonctionnel.
@@ -44,8 +63,16 @@ function ClickHandler({ onClic }) {
  * @param {Function} props.onClicMarker       Appelé avec le bâtiment sélectionné
  */
 export default function MapView({ pointIntervention, batimentsFiltres, onClicCarte, onClicMarker }) {
+  const [fondCarteIndisponible, setFondCarteIndisponible] = useState(false)
+
   return (
     <div className={styles.mapWrapper}>
+      {/* MSG-006 — fond de carte indisponible */}
+      {fondCarteIndisponible && (
+        <div className={styles.messageFondCarte} role="alert">
+          {MESSAGES.FOND_CARTE_INDISPONIBLE}
+        </div>
+      )}
       <MapContainer
         center={CENTRE_LAVAL}
         zoom={ZOOM_INITIAL}
@@ -66,6 +93,7 @@ export default function MapView({ pointIntervention, batimentsFiltres, onClicCar
           opacity={0}
         />
 
+        <TileErrorWatcher onTileError={() => setFondCarteIndisponible(true)} />
         <ClickHandler onClic={onClicCarte} />
         {pointIntervention && <RecenterMap point={pointIntervention} />}
 

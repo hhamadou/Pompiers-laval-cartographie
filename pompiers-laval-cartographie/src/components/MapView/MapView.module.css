@@ -33,3 +33,19 @@
   pointer-events: none;
   white-space: nowrap;
 }
+
+/* MSG-006 — bannière fond de carte indisponible */
+.messageFondCarte {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #7a4a00;
+  color: #fff;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  z-index: 1001;
+  pointer-events: none;
+  white-space: nowrap;
+}

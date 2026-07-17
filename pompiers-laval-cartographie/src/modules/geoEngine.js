@@ -8,6 +8,52 @@ import { PARAMS, MESSAGES } from '../config/params.js'
 
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
 
+// Politique d'usage Nominatim — User-Agent obligatoire
+const NOMINATIM_HEADERS = {
+  'Accept-Language': 'fr',
+  'User-Agent': 'PompiersLavalCartographie/0.1 (intranet-ssi-laval)',
+}
+
+/**
+ * Retourne jusqu'à 3 suggestions Nominatim pour une adresse saisie.
+ * Référence : CA-005.
+ *
+ * @param {string} adresse
+ * @returns {Promise<Array<{lat: number, lon: number, libelle: string}>>}
+ *          Tableau vide si indisponible ou aucun résultat.
+ */
+export async function geocoderAdresseSuggestions(adresse) {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    PARAMS.DELAI_TIMEOUT_GEOCODAGE * 1000
+  )
+
+  try {
+    const params = new URLSearchParams({
+      q: adresse,
+      format: 'json',
+      limit: '3',
+      countrycodes: 'ca',
+    })
+    const reponse = await fetch(`${NOMINATIM_URL}?${params}`, {
+      signal: controller.signal,
+      headers: NOMINATIM_HEADERS,
+    })
+    const resultats = await reponse.json()
+    if (!resultats || resultats.length === 0) return []
+    return resultats.map((r) => ({
+      lat: parseFloat(r.lat),
+      lon: parseFloat(r.lon),
+      libelle: r.display_name,
+    }))
+  } catch {
+    return []
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
+
 /**
  * Convertit une adresse textuelle en coordonnées GPS via Nominatim.
  * Règle DEC-006 : Nominatim (OpenStreetMap) — gratuit, sans clé API.
@@ -32,7 +78,7 @@ export async function geocoderAdresse(adresse) {
     })
     const reponse = await fetch(`${NOMINATIM_URL}?${params}`, {
       signal: controller.signal,
-      headers: { 'Accept-Language': 'fr' },
+      headers: NOMINATIM_HEADERS,
     })
     const resultats = await reponse.json()
     if (!resultats || resultats.length === 0) return null

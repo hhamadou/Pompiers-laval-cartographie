@@ -8,33 +8,36 @@ Permet d'identifier rapidement les bâtiments contenant des matières dangereuse
 
 ## Prérequis
 
-- [Node.js](https://nodejs.org/) v20+
-- npm v10+
+- [Node.js](https://nodejs.org/) v18+ (testé avec v24.18.0)
+- npm v10+ (testé avec v11.16.0)
+- Git (optionnel)
 
-## Installation
+## Lancer le projet
 
-```bash
-npm install
+Ouvrir un terminal **PowerShell** dans le dossier du projet :
+
+```powershell
+cd C:\Users\XXHamadou\.bob\playground\pompiers-laval-cartographie
+npm install        # une seule fois après clonage ou installation de Node
+npm run dev        # démarre le serveur de développement
 ```
 
-## Développement
+Ouvrir ensuite **http://localhost:5173** dans le navigateur.
 
-```bash
-npm run dev
-# → http://localhost:5173
-```
+> 💡 Si `npm` n'est pas reconnu, fermer et rouvrir le terminal après l'installation de Node.js.
 
-## Build production
+## Tests unitaires
 
-```bash
-npm run build
-# → dossier /dist à déposer sur le serveur intranet Windows
-```
-
-## Tests
-
-```bash
+```powershell
 npm run test
+# → 10 tests doivent passer (geoEngine : haversine + filtrage)
+```
+
+## Build production (déploiement intranet)
+
+```powershell
+npm run build
+# → dossier /dist généré, à déposer sur le serveur Windows intranet
 ```
 
 ---
