@@ -8,8 +8,8 @@
     "quantites": ["500 L"],
     "niveau_danger": 1,
     "consignes": "Évacuation 300 m. Ne pas utiliser d'eau. Porter EPI niveau A.",
-    "latitude": 45.5646,
-    "longitude": -73.7439
+    "latitude": 45.5675,
+    "longitude": -73.7501
   },
   {
     "id": "BAT-002",
@@ -20,8 +20,8 @@
     "quantites": ["10 000 L", "5 000 L"],
     "niveau_danger": 2,
     "consignes": "Risque incendie. Extincteur CO2 ou mousse seulement.",
-    "latitude": 45.5658,
-    "longitude": -73.7428
+    "latitude": 45.5687,
+    "longitude": -73.7490
   },
   {
     "id": "BAT-003",
@@ -31,8 +31,8 @@
     "matieres_dangereuses": ["Huile de moteur usée", "Liquide de frein", "Antigel"],
     "quantites": ["200 L", "50 L", "100 L"],
     "niveau_danger": 3,
-    "latitude": 45.5661,
-    "longitude": -73.7455
+    "latitude": 45.5690,
+    "longitude": -73.7517
   },
   {
     "id": "BAT-004",
@@ -43,8 +43,8 @@
     "quantites": [],
     "niveau_danger": 1,
     "consignes": "Zone confinée. Accès restreint. Contacter le directeur de site avant intervention.",
-    "latitude": 45.5655,
-    "longitude": -73.7445
+    "latitude": 45.5684,
+    "longitude": -73.7507
   },
   {
     "id": "BAT-005",
@@ -55,8 +55,8 @@
     "quantites": ["150 L", "80 L", "60 L", "40 L", "30 L"],
     "niveau_danger": 2,
     "consignes": "Risque d'explosion des vapeurs. Ventiler avant entrée.",
-    "latitude": 45.5640,
-    "longitude": -73.7462
+    "latitude": 45.5669,
+    "longitude": -73.7524
   },
   {
     "id": "BAT-006",
@@ -67,8 +67,8 @@
     "quantites": null,
     "niveau_danger": 3,
     "consignes": null,
-    "latitude": 45.5668,
-    "longitude": -73.7471
+    "latitude": 45.5697,
+    "longitude": -73.7533
   },
   {
     "id": "BAT-007",
@@ -79,8 +79,8 @@
     "quantites": ["1 200 kg", "800 kg"],
     "niveau_danger": 1,
     "consignes": "Gaz toxique. Périmètre d'exclusion 500 m. Masque SCBA obligatoire.",
-    "latitude": 45.5691,
-    "longitude": -73.7393
+    "latitude": 45.5720,
+    "longitude": -73.7455
   },
   {
     "id": "BAT-008",
@@ -91,8 +91,8 @@
     "quantites": ["500 L", "300 L", "100 L"],
     "niveau_danger": 2,
     "consignes": "Éviter mélange acide/peroxyde.",
-    "latitude": 45.5810,
-    "longitude": -73.7200
+    "latitude": 45.5839,
+    "longitude": -73.7262
   },
   {
     "id": "BAT-009",
@@ -103,8 +103,8 @@
     "quantites": ["250 kg", "2 000 kg", "300 L", "150 L", "120 L"],
     "niveau_danger": 3,
     "consignes": "Produits phytosanitaires. Ne pas inhaler.",
-    "latitude": 45.5950,
-    "longitude": -73.7050
+    "latitude": 45.5979,
+    "longitude": -73.7112
   },
   {
     "id": "BAT-010",
@@ -137,8 +137,8 @@
     "quantites": ["25 000 L", "15 000 L", "5 000 kg"],
     "niveau_danger": 2,
     "consignes": "ATEX zone 1. Interdire toute flamme dans un rayon de 50 m.",
-    "latitude": 45.5652,
-    "longitude": -73.7398
+    "latitude": 45.5681,
+    "longitude": -73.7460
   },
   {
     "id": "BAT-013",
@@ -149,8 +149,8 @@
     "quantites": ["120 L", "80 L"],
     "niveau_danger": 3,
     "consignes": "Cabine de peinture ventilée. Risque incendie faible.",
-    "latitude": 45.5663,
-    "longitude": -73.7408
+    "latitude": 45.5692,
+    "longitude": -73.7470
   },
   {
     "id": "BAT-014",
@@ -161,8 +161,8 @@
     "quantites": ["5 000 L", "1 000 L", "500 L", "800 L", "200 kg"],
     "niveau_danger": 1,
     "consignes": "Zone de biosécurité niv.2. Coordination obligatoire avec responsable HSE.",
-    "latitude": 45.5648,
-    "longitude": -73.7418
+    "latitude": 45.5677,
+    "longitude": -73.7480
   },
   {
     "id": "BAT-015",
@@ -173,8 +173,8 @@
     "quantites": ["450 kg"],
     "niveau_danger": 2,
     "consignes": "Bonbonnes sous pression. Isoler et aérer. Appel CANUTEC 1-800-424-9300.",
-    "latitude": 45.5644,
-    "longitude": -73.7433
+    "latitude": 45.5673,
+    "longitude": -73.7495
   },
   {
     "id": "BAT-016",
@@ -185,8 +185,8 @@
     "quantites": ["60 L", null, "40 L", null],
     "niveau_danger": 3,
     "consignes": "Risque incendie lié à la poussière de bois. Dépoussiérage obligatoire.",
-    "latitude": 45.5660,
-    "longitude": -73.7480
+    "latitude": 45.5689,
+    "longitude": -73.7542
   },
   {
     "id": "BAT-017",
@@ -197,8 +197,8 @@
     "quantites": ["3 500 L", "1 200 L", "80 kg"],
     "niveau_danger": 1,
     "consignes": "Risque de polymérisation spontanée. Maintenir température < 20°C.",
-    "latitude": 45.5637,
-    "longitude": -73.7452
+    "latitude": 45.5666,
+    "longitude": -73.7514
   },
   {
     "id": "BAT-018",
@@ -208,9 +208,9 @@
     "matieres_dangereuses": ["Dioxyde de chlore", "Sulfate d'aluminium"],
     "quantites": ["200 kg", "10 000 kg"],
     "niveau_danger": 2,
-    "consignes": "Produit oxydant fort. Contact avec matières organiques = risque incendie. Isoler immédiatement. Appel urgence chimique obligatoire. Ne pas diluer à l'eau.",
-    "latitude": 45.5672,
-    "longitude": -73.7422
+    "consignes": "Produit oxydant fort. Contact avec matières organiques = risque incendie.",
+    "latitude": 45.5701,
+    "longitude": -73.7484
   },
   {
     "id": "BAT-019",
@@ -221,8 +221,8 @@
     "quantites": ["50 kg"],
     "niveau_danger": 3,
     "consignes": "Salle des machines fermée à clé. Contacter gérant.",
-    "latitude": 45.5693,
-    "longitude": -73.7386
+    "latitude": 45.5722,
+    "longitude": -73.7448
   },
   {
     "id": "BAT-020",
@@ -233,8 +233,8 @@
     "quantites": ["8 000 L", "2 000 L"],
     "niveau_danger": 1,
     "consignes": "Déchets dangereux en attente. Zone non accessible sans EPP. Contacter chef de site.",
-    "latitude": 45.5643,
-    "longitude": -73.7424
+    "latitude": 45.5672,
+    "longitude": -73.7486
   },
   {
     "id": "BAT-021",
@@ -245,8 +245,8 @@
     "quantites": ["500 kg", "2 tonnes", "1 000 unités", "3 000 L"],
     "niveau_danger": 2,
     "consignes": "Présence simultanée de plusieurs classes de danger. Plan d'urgence interne requis.",
-    "latitude": 45.5900,
-    "longitude": -73.7150
+    "latitude": 45.5929,
+    "longitude": -73.7212
   },
   {
     "id": "BAT-022",
@@ -257,8 +257,8 @@
     "quantites": ["10 bouteilles 50 L"],
     "niveau_danger": 1,
     "consignes": "Comburant. Interdire toute flamme à proximité. Évacuation des patients à coordonner.",
-    "latitude": 45.5650,
-    "longitude": -73.7435
+    "latitude": 45.5679,
+    "longitude": -73.7497
   },
   {
     "id": "BAT-023",
@@ -269,8 +269,8 @@
     "quantites": ["200 unités", "50 unités", "30 L"],
     "niveau_danger": 3,
     "consignes": null,
-    "latitude": 45.5665,
-    "longitude": -73.7416
+    "latitude": 45.5694,
+    "longitude": -73.7478
   },
   {
     "id": "BAT-024",
@@ -281,8 +281,8 @@
     "quantites": ["1 500 kg", "500 L", "800 L", "600 L", "1 000 kg"],
     "niveau_danger": 2,
     "consignes": "Ammoniac sous pression dans le système de réfrigération. Prévoir SCBA.",
-    "latitude": 45.5653,
-    "longitude": -73.7460
+    "latitude": 45.5682,
+    "longitude": -73.7522
   },
   {
     "id": "BAT-025",
@@ -293,8 +293,8 @@
     "quantites": ["5 L", "50 L", "10 L"],
     "niveau_danger": 1,
     "consignes": "Matières hautement toxiques. Port de la combinaison intégrale obligatoire. Alerter CANUTEC.",
-    "latitude": 45.5641,
-    "longitude": -73.7448
+    "latitude": 45.5670,
+    "longitude": -73.7510
   },
   {
     "id": "BAT-026",
@@ -305,8 +305,8 @@
     "quantites": ["100 bouteilles", "2 000 L"],
     "niveau_danger": 3,
     "consignes": "Bonbonnes propane en cage extérieure. Risque faible si dégagement thermique limité.",
-    "latitude": 45.5659,
-    "longitude": -73.7475
+    "latitude": 45.5688,
+    "longitude": -73.7537
   },
   {
     "id": "BAT-027",
@@ -317,8 +317,8 @@
     "quantites": ["20 000 kg"],
     "niveau_danger": 2,
     "consignes": "Présence variable. Vérifier manifeste de transport. Périmètre 200 m minimum.",
-    "latitude": 45.5666,
-    "longitude": -73.7441
+    "latitude": 45.5695,
+    "longitude": -73.7503
   },
   {
     "id": "BAT-028",
@@ -329,8 +329,8 @@
     "quantites": ["20 000 L", "2 000 L", "300 kg", "5 000 L"],
     "niveau_danger": 1,
     "consignes": "Site industriel majeur. Coordination obligatoire avec responsable HSE avant toute intervention.",
-    "latitude": 45.4483,
-    "longitude": -73.8833
+    "latitude": 45.4512,
+    "longitude": -73.8895
   },
   {
     "id": "BAT-029",
@@ -341,8 +341,8 @@
     "quantites": [null, null, null, null, null],
     "niveau_danger": 3,
     "consignes": "Petites quantités. Risque faible en conditions normales.",
-    "latitude": 45.5669,
-    "longitude": -73.7430
+    "latitude": 45.5698,
+    "longitude": -73.7492
   },
   {
     "id": "BAT-030",
@@ -353,8 +353,8 @@
     "quantites": ["500 kg", "Non quantifiable"],
     "niveau_danger": 2,
     "consignes": "Risque d'explosion de poussière. Interdit d'allumer en cas de fuite farine.",
-    "latitude": 45.5647,
-    "longitude": -73.7444
+    "latitude": 45.5676,
+    "longitude": -73.7506
   },
   {
     "id": "BAT-031",
@@ -365,8 +365,8 @@
     "quantites": ["10 kg", "5 kg"],
     "niveau_danger": 1,
     "consignes": "Extrêmement toxique. Évacuer 500 m. Alerter CANUTEC et équipe HazMat.",
-    "latitude": 45.5642,
-    "longitude": -73.7458
+    "latitude": 45.5671,
+    "longitude": -73.7520
   },
   {
     "id": "BAT-032",
@@ -377,8 +377,8 @@
     "quantites": ["100 L", "20 kg", "50 L cuve"],
     "niveau_danger": 3,
     "consignes": "Bouteilles de gaz à fixer au mur. Risque limité.",
-    "latitude": 45.5780,
-    "longitude": -73.7320
+    "latitude": 45.5809,
+    "longitude": -73.7382
   },
   {
     "id": "BAT-033",
@@ -389,8 +389,8 @@
     "quantites": ["Variable", "Variable", "200 L", "500 L"],
     "niveau_danger": 2,
     "consignes": "Espace clos. Gaz asphyxiants. Trépied + détecteur gaz obligatoire avant entrée.",
-    "latitude": 45.5670,
-    "longitude": -73.7437
+    "latitude": 45.5699,
+    "longitude": -73.7499
   },
   {
     "id": "BAT-034",
@@ -401,8 +401,8 @@
     "quantites": ["Émission diffuse"],
     "niveau_danger": 1,
     "consignes": "Cancérogène confirmé. Port de masque P3 obligatoire. Mesurer concentration avant entrée.",
-    "latitude": 45.5638,
-    "longitude": -73.7465
+    "latitude": 45.5667,
+    "longitude": -73.7527
   },
   {
     "id": "BAT-035",
@@ -413,8 +413,8 @@
     "quantites": ["2 L", "10 L"],
     "niveau_danger": 3,
     "consignes": "Faibles quantités. Armoires sécurisées. Appel direction en priorité.",
-    "latitude": 45.5661,
-    "longitude": -73.7426
+    "latitude": 45.5690,
+    "longitude": -73.7488
   },
   {
     "id": "BAT-036",
@@ -425,8 +425,8 @@
     "quantites": ["1 bouteille 10 L", "2 bouteilles 50 L", "5 L"],
     "niveau_danger": 2,
     "consignes": "Soudure au sous-sol. Évacuation bâtiment C en priorité.",
-    "latitude": 45.5654,
-    "longitude": -73.7468
+    "latitude": 45.5683,
+    "longitude": -73.7530
   },
   {
     "id": "BAT-037",
@@ -437,8 +437,8 @@
     "quantites": ["2 000 L", "500 kg", "1 200 L", "400 L", "600 L"],
     "niveau_danger": 1,
     "consignes": "Classe B solides/liquides. Système sprinkleur requis. Ne pas éteindre à l'eau les solvants.",
-    "latitude": 45.5645,
-    "longitude": -73.7450
+    "latitude": 45.5674,
+    "longitude": -73.7512
   },
   {
     "id": "BAT-038",
@@ -449,8 +449,8 @@
     "quantites": ["30 000 L (réservoirs souterrains)"],
     "niveau_danger": 2,
     "consignes": "Réservoirs souterrains. ATEX zone 2. Présence détecteur fuite obligatoire.",
-    "latitude": 45.5656,
-    "longitude": -73.7413
+    "latitude": 45.5685,
+    "longitude": -73.7475
   },
   {
     "id": "BAT-039",
@@ -461,8 +461,8 @@
     "quantites": ["50 L", "30 L", "20 L", "40 L"],
     "niveau_danger": 3,
     "consignes": "Usage courant. Risque faible.",
-    "latitude": 45.5667,
-    "longitude": -73.7420
+    "latitude": 45.5696,
+    "longitude": -73.7482
   },
   {
     "id": "BAT-040",
@@ -473,8 +473,8 @@
     "quantites": ["Variable", "10 000 L/mois", "Variable"],
     "niveau_danger": 1,
     "consignes": "Zone de captage biogaz. Détecteur portable obligatoire. Aucune flamme.",
-    "latitude": 45.5760,
-    "longitude": -73.7260
+    "latitude": 45.5789,
+    "longitude": -73.7322
   },
   {
     "id": "BAT-041",
@@ -485,8 +485,8 @@
     "quantites": ["200 kg", "80 kg"],
     "niveau_danger": 2,
     "consignes": "Cuisine en sous-sol. Fermer vanne gaz principale en cas d'alarme.",
-    "latitude": 45.5649,
-    "longitude": -73.7406
+    "latitude": 45.5678,
+    "longitude": -73.7468
   },
   {
     "id": "BAT-042",
@@ -497,8 +497,8 @@
     "quantites": ["20 L"],
     "niveau_danger": 3,
     "consignes": "Stockage arrière sécurisé. Risque résiduel faible.",
-    "latitude": 45.5657,
-    "longitude": -73.7447
+    "latitude": 45.5686,
+    "longitude": -73.7509
   },
   {
     "id": "BAT-043",
@@ -509,8 +509,8 @@
     "quantites": ["500 L", "200 L"],
     "niveau_danger": 1,
     "consignes": "Produits critiques pour soins. Ne pas couper l'alimentation électrique sans coordination.",
-    "latitude": 45.5643,
-    "longitude": -73.7432
+    "latitude": 45.5672,
+    "longitude": -73.7494
   },
   {
     "id": "BAT-044",
@@ -521,8 +521,8 @@
     "quantites": ["50 000 L", "30 000 L", "15 000 L"],
     "niveau_danger": 2,
     "consignes": "Réservoirs à toit flottant. Mousses IFR disponibles sur site.",
-    "latitude": 45.5636,
-    "longitude": -73.7440
+    "latitude": 45.5665,
+    "longitude": -73.7502
   },
   {
     "id": "BAT-045",
@@ -533,8 +533,8 @@
     "quantites": ["100 L", "50 kg", "30 L", "500 kg", "25 kg"],
     "niveau_danger": 3,
     "consignes": "Produits phytosanitaires stockés dans local fermé à clé.",
-    "latitude": 45.5980,
-    "longitude": -73.6900
+    "latitude": 45.6009,
+    "longitude": -73.6962
   },
   {
     "id": "BAT-046",
@@ -545,8 +545,8 @@
     "quantites": ["40 000 L", "500 kg", "2 000 L", "15 000 L"],
     "niveau_danger": 1,
     "consignes": "Risque électrique haute tension (225 kV). NE PAS APPROCHER sans coordination Hydro-Québec. SF6 — asphyxiant.",
-    "latitude": 45.5639,
-    "longitude": -73.7421
+    "latitude": 45.5668,
+    "longitude": -73.7483
   },
   {
     "id": "BAT-047",
@@ -557,8 +557,8 @@
     "quantites": ["5 kg", "20 kg", "5 000 unités", "15 kg", "10 kg"],
     "niveau_danger": 2,
     "consignes": "Permis explosifs requis. Éviter friction et choc. Alerte démineurs si incident.",
-    "latitude": 45.5662,
-    "longitude": -73.7453
+    "latitude": 45.5691,
+    "longitude": -73.7515
   },
   {
     "id": "BAT-048",
@@ -569,8 +569,8 @@
     "quantites": ["100 L", "2 000 kg"],
     "niveau_danger": 3,
     "consignes": "CO2 à haute concentration en période de nuit. Ventilation automatique.",
-    "latitude": 45.5671,
-    "longitude": -73.7427
+    "latitude": 45.5700,
+    "longitude": -73.7489
   },
   {
     "id": "BAT-049",
@@ -581,8 +581,8 @@
     "quantites": ["5 000 kg", "Traces", "200 L"],
     "niveau_danger": 1,
     "consignes": "Métaux lourds. Masque FFP3 et visière obligatoires. Surveiller contamination au sol.",
-    "latitude": 45.5688,
-    "longitude": -73.7390
+    "latitude": 45.5717,
+    "longitude": -73.7452
   },
   {
     "id": "BAT-050",
@@ -593,7 +593,7 @@
     "quantites": ["15 000 kg"],
     "niveau_danger": 2,
     "consignes": "Four à induction + propane. Risque explosion si fuite + ignition. Zone ATEX.",
-    "latitude": 45.5635,
-    "longitude": -73.7455
+    "latitude": 45.5664,
+    "longitude": -73.7517
   }
 ]

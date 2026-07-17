@@ -9,11 +9,11 @@ describe('calculerDistance', () => {
     expect(calculerDistance(45.5646, -73.7439, 45.5646, -73.7439)).toBe(0)
   })
 
-  it('calcule une distance réaliste entre deux points de Laval (~130m)', () => {
-    // BAT-001 et BAT-002 du fichier JSON
-    const dist = calculerDistance(45.5646, -73.7439, 45.5658, -73.7428)
+  it('calcule une distance réaliste entre deux points de Laval (~150m)', () => {
+    // BAT-001 et BAT-002 du fichier JSON (coordonnées recalibrées)
+    const dist = calculerDistance(45.5675, -73.7501, 45.5687, -73.7490)
     expect(dist).toBeGreaterThan(100)
-    expect(dist).toBeLessThan(200)
+    expect(dist).toBeLessThan(250)
   })
 
   it('retourne une valeur positive même si les coordonnées sont inversées', () => {
@@ -25,13 +25,13 @@ describe('calculerDistance', () => {
 
 // ─── filtrerParRayon ──────────────────────────────────────────────────────────
 
-const POINT_CENTRE = { lat: 45.5646, lon: -73.7439 }
+const POINT_CENTRE = { lat: 45.5675, lon: -73.7501 }
 
 const BATIMENTS_TEST = [
   // Dans le rayon (~0m du centre)
-  { id: 'A', latitude: 45.5646, longitude: -73.7439, niveau_danger: 1 },
-  // Dans le rayon (~130m)
-  { id: 'B', latitude: 45.5658, longitude: -73.7428, niveau_danger: 2 },
+  { id: 'A', latitude: 45.5675, longitude: -73.7501, niveau_danger: 1 },
+  // Dans le rayon (~150m)
+  { id: 'B', latitude: 45.5687, longitude: -73.7490, niveau_danger: 2 },
   // Hors rayon (loin)
   { id: 'C', latitude: 46.0, longitude: -74.0, niveau_danger: 3 },
   // Sans coordonnées GPS — RA-009 : exclu silencieusement

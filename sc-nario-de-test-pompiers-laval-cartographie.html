@@ -1,0 +1,433 @@
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Scénario de test — Pompiers Laval</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #ffffff;
+    padding: 2rem 1rem 3rem;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+
+  h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .subtitle { color: #57606a; font-size: 0.88rem; margin-bottom: 2rem; }
+
+  h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #57606a;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Bloc de prérequis */
+  .prereq {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.88rem;
+  }
+  .prereq code {
+    background: #e5e7eb;
+    border-radius: 3px;
+    padding: 0.1rem 0.35rem;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 0.85rem;
+  }
+
+  /* Table de cas */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.86rem; }
+  thead tr { background: #f7f8fa; }
+  th {
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid #e5e7eb;
+    font-weight: 600;
+    color: #1f2328;
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #fafafa; }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-r1  { background: #fde8e8; color: #9b1c1c; }
+  .badge-r2  { background: #fde8e8; color: #9b1c1c; }
+  .badge-r3  { background: #fff3cd; color: #7a4a00; }
+  .badge-ok  { background: #e6f4ea; color: #1e6b3a; }
+  .badge-ko  { background: #fde8e8; color: #9b1c1c; }
+  .badge-ux  { background: #e8f0fe; color: #1a56db; }
+  .badge-edge { background: #f0e8ff; color: #5b21b6; }
+
+  /* Case à cocher simulée */
+  .check { font-size: 1rem; margin-right: 0.3rem; }
+
+  code {
+    background: #f0f0f0;
+    border-radius: 3px;
+    padding: 0.1rem 0.35rem;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 0.82rem;
+  }
+
+  .result-expected {
+    color: #1e6b3a;
+    font-weight: 500;
+  }
+  .result-fail {
+    color: #9b1c1c;
+    font-weight: 500;
+  }
+
+  /* Section numérotée */
+  .section-num {
+    display: inline-block;
+    background: #1f2328;
+    color: #fff;
+    border-radius: 50%;
+    width: 1.4rem;
+    height: 1.4rem;
+    text-align: center;
+    line-height: 1.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-right: 0.4rem;
+  }
+
+  .note {
+    background: #fffbea;
+    border-left: 3px solid #f59e0b;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.84rem;
+    margin: 0.5rem 0 1rem;
+    color: #7a4a00;
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #57606a;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Scénario de test — Pompiers Laval Cartographie</h1>
+  <p class="subtitle">Application React + Leaflet · Branche <code>develop</code> · Données réelles du JSON (34 bâtiments)</p>
+
+  
+  <div class="prereq">
+    <strong>Avant de commencer :</strong> ouvrir un terminal PowerShell →
+    <code>cd C:\Users\XXHamadou\.bob\playground\pompiers-laval-cartographie</code> →
+    <code>npm run dev</code> → ouvrir <strong>http://localhost:5173</strong> dans le navigateur.
+    Garder la console du navigateur ouverte (F12 → Onglet Console) pour détecter les erreurs JS.
+  </div>
+
+  
+  <h2><span class="section-num">1</span> Démarrage de l'application</h2>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-01</td>
+        <td>Charger <code>http://localhost:5173</code></td>
+        <td class="result-expected">La page s'affiche sans erreur JS dans la console. La carte OpenStreetMap est visible, centrée sur Laval (zoom 13).</td>
+        <td><span class="badge badge-ok">C-001</span></td>
+      </tr>
+      <tr>
+        <td>T-02</td>
+        <td>Observer la barre de statut en haut</td>
+        <td class="result-expected">Badge vert "34 bâtiments chargés" affiché (MSG-002). Aucun spinner, aucun message d'erreur.</td>
+        <td><span class="badge badge-ok">MSG-002</span></td>
+      </tr>
+      <tr>
+        <td>T-03</td>
+        <td>Observer l'interface complète</td>
+        <td class="result-expected">4 zones visibles : barre statut, champ de recherche, panneaux de filtres, carte. Aucun marker sur la carte (aucun point d'intervention défini).</td>
+        <td><span class="badge badge-ux">UX</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">2</span> Géocodage — Adresse valide (1 résultat)</h2>
+  <div class="note">Adresse de référence : <strong>450 boulevard Industriel, Laval</strong> → correspond à BAT-001 (lat 45.5646, lon -73.7439) — point central de la zone dense de test.</div>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-04</td>
+        <td>Saisir <code>450 boulevard Industriel, Laval</code> et cliquer "📍 Localiser"</td>
+        <td class="result-expected">Bouton passe à "..." pendant le géocodage. La carte se recentre avec un zoom 15. Un marqueur blanc "📍 Point d'intervention" apparaît. Un cercle bleu foncé de 500m est tracé.</td>
+        <td><span class="badge badge-ok">C-002</span></td>
+      </tr>
+      <tr>
+        <td>T-05</td>
+        <td>Observer les markers colorés dans le cercle</td>
+        <td class="result-expected">Au moins 10 markers apparaissent dans le rayon. Markers rouges (niveau 1), oranges (niveau 2), jaunes (niveau 3). Chaque marker affiche sa distance en mètres sous le point.</td>
+        <td><span class="badge badge-ok">C-003</span></td>
+      </tr>
+      <tr>
+        <td>T-06</td>
+        <td>Vérifier que BAT-001 est présent</td>
+        <td class="result-expected">Un marker rouge à <strong>0 m</strong> est visible (Entrepôt Chimique Laval — distance ≈ 0 car c'est le point d'intervention lui-même).</td>
+        <td><span class="badge badge-r1">Niveau 1</span></td>
+      </tr>
+      <tr>
+        <td>T-07</td>
+        <td>Vérifier que BAT-002 est présent</td>
+        <td class="result-expected">Marker orange à environ <strong>130 m</strong> (Raffinerie Petro-Laval).</td>
+        <td><span class="badge badge-r2">Niveau 2</span></td>
+      </tr>
+      <tr>
+        <td>T-08</td>
+        <td>Vérifier que BAT-003 est présent</td>
+        <td class="result-expected">Marker jaune à environ <strong>210 m</strong> (Garage Municipal Laval).</td>
+        <td><span class="badge badge-r3">Niveau 3</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">3</span> CA-005 — Liste déroulante de suggestions Nominatim</h2>
+  <div class="note">Pour tester CA-005, il faut une requête ambiguë qui retourne plusieurs résultats Nominatim. Essayer avec une adresse courte ou générique.</div>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-09</td>
+        <td>Vider le champ, saisir <code>boulevard Industriel, Laval</code> et cliquer "📍 Localiser"</td>
+        <td class="result-expected">Si Nominatim retourne plusieurs résultats : une liste déroulante apparaît sous le champ (max 3 lignes). Chaque ligne affiche l'adresse complète. <em>Si 1 seul résultat → positionnement direct sans liste.</em></td>
+        <td><span class="badge badge-ok">CA-005</span></td>
+      </tr>
+      <tr>
+        <td>T-10</td>
+        <td>Cliquer sur une suggestion dans la liste</td>
+        <td class="result-expected">La liste disparaît. Le champ de recherche se remplit de l'adresse choisie. La carte se positionne sur ce point avec le cercle 500m.</td>
+        <td><span class="badge badge-ok">CA-005</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">4</span> Adresses invalides et cas d'erreur</h2>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-11</td>
+        <td>Saisir <code>qwertyuiop123 adresse fictive</code> et cliquer "📍 Localiser"</td>
+        <td class="result-expected">Message d'erreur rouge : <em>"Adresse non trouvée. Vérifiez l'adresse ou cliquez directement sur la carte."</em> La carte ne bouge pas.</td>
+        <td><span class="badge badge-ko">MSG-005</span></td>
+      </tr>
+      <tr>
+        <td>T-12</td>
+        <td>Cliquer le bouton "📍 Localiser" avec le champ vide</td>
+        <td class="result-expected">Le bouton reste désactivé (grisé). Aucune action.</td>
+        <td><span class="badge badge-ux">UX</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">5</span> Fallback — Clic direct sur la carte</h2>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-13</td>
+        <td>Cliquer directement sur la carte (sans saisir d'adresse) dans la zone industrielle nord de Laval</td>
+        <td class="result-expected">Le marqueur "📍 Point d'intervention" se place à l'endroit cliqué. Le cercle 500m se trace. Les markers des bâtiments dans le rayon apparaissent.</td>
+        <td><span class="badge badge-ok">DEC-007</span></td>
+      </tr>
+      <tr>
+        <td>T-14</td>
+        <td>Cliquer dans une zone sans bâtiments (ex : au milieu de la rivière des Prairies)</td>
+        <td class="result-expected">Le cercle se trace. Aucun marker. Message en bas de carte : <em>"Aucun bâtiment à risque dans ce périmètre."</em></td>
+        <td><span class="badge badge-ko">MSG-007</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">6</span> C-004 — Filtres</h2>
+  <div class="note">Reprendre la position de T-04 : <code>450 boulevard Industriel, Laval</code> (zone avec niveaux 1, 2 et 3).</div>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-15</td>
+        <td>Décocher le toggle "Niveau 3 — Faible" dans le panneau de filtres</td>
+        <td class="result-expected">Les markers jaunes disparaissent immédiatement (ex: BAT-003 Garage Municipal, BAT-005 Imprimerie). Les rouges et oranges restent.</td>
+        <td><span class="badge badge-ok">C-004</span></td>
+      </tr>
+      <tr>
+        <td>T-16</td>
+        <td>Décocher aussi "Niveau 2 — Modéré"</td>
+        <td class="result-expected">Seuls les markers rouges (niveau 1) restent : BAT-001, BAT-004, BAT-007, BAT-014, BAT-017…</td>
+        <td><span class="badge badge-ok">C-004</span></td>
+      </tr>
+      <tr>
+        <td>T-17</td>
+        <td>Décocher "Niveau 1 — Élevé" (tous décochés)</td>
+        <td class="result-expected">Aucun marker. Message <em>"Aucun bâtiment à risque dans ce périmètre."</em> apparaît.</td>
+        <td><span class="badge badge-ok">C-004</span></td>
+      </tr>
+      <tr>
+        <td>T-18</td>
+        <td>Tout recocher, puis choisir le type <strong>"Industrie chimique"</strong> dans le filtre par type</td>
+        <td class="result-expected">Seuls les bâtiments de type "Industrie chimique" dans le rayon sont affichés (ex : BAT-007 LavalinChem, BAT-017 Nexus…).</td>
+        <td><span class="badge badge-ok">C-004</span></td>
+      </tr>
+      <tr>
+        <td>T-19</td>
+        <td>Remettre le filtre type sur "Tous les types"</td>
+        <td class="result-expected">Tous les markers du rayon réapparaissent. Les données n'ont pas été altérées (RA-012).</td>
+        <td><span class="badge badge-ok">RA-012</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">7</span> C-005 — Fiche synthétique bâtiment</h2>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-20</td>
+        <td>Cliquer sur le marker rouge BAT-001 (0 m — Entrepôt Chimique Laval)</td>
+        <td class="result-expected">Une fiche modale s'ouvre avec : <strong>Entrepôt Chimique Laval</strong>, adresse, type "Entrepôt chimique", matières : "Acide sulfurique", quantités : "500 L", niveau : <strong>Élevé</strong>, consignes : "Évacuation 300 m. Ne pas utiliser d'eau. Porter EPI niveau A."</td>
+        <td><span class="badge badge-ok">C-005</span></td>
+      </tr>
+      <tr>
+        <td>T-21</td>
+        <td>Sans fermer la fiche, cliquer sur un autre marker (ex : BAT-002)</td>
+        <td class="result-expected">La fiche se met à jour avec les informations de BAT-002 (Raffinerie Petro-Laval). Une seule fiche ouverte à la fois (RA-013).</td>
+        <td><span class="badge badge-ok">RA-013</span></td>
+      </tr>
+      <tr>
+        <td>T-22</td>
+        <td>Cliquer sur BAT-004 (Laboratoire BioTech Nord) — champ <code>quantites: []</code></td>
+        <td class="result-expected">Le champ "Quantités" affiche <strong>"Non renseigné"</strong> (RA-014 — champ vide → "Non renseigné").</td>
+        <td><span class="badge badge-edge">RA-014</span></td>
+      </tr>
+      <tr>
+        <td>T-23</td>
+        <td>Cliquer sur BAT-003 (Garage Municipal) — champ <code>consignes</code> absent</td>
+        <td class="result-expected">Le champ "Consignes" affiche <strong>"Non renseigné"</strong>.</td>
+        <td><span class="badge badge-edge">RA-014</span></td>
+      </tr>
+      <tr>
+        <td>T-24</td>
+        <td>Fermer la fiche (bouton ✕)</td>
+        <td class="result-expected">La modale disparaît. La carte reste en place. Les markers restent visibles.</td>
+        <td><span class="badge badge-ok">C-005</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">8</span> Cas limites — Bâtiments sans GPS</h2>
+  <div class="note">BAT-010 et BAT-011 ont <code>latitude: null</code> dans le JSON → doivent être exclus silencieusement (jamais affichés comme markers, jamais signalés à l'utilisateur).</div>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-25</td>
+        <td>Chercher <code>75 rue Saint-Martin, Laval</code> (adresse de BAT-010)</td>
+        <td class="result-expected">Si Nominatim trouve l'adresse, la carte se positionne. BAT-010 (Dépôt Chimique Saint-Martin, Ammoniac/Chlore, niveau 1) n'apparaît <strong>jamais comme marker</strong> — aucun message d'erreur non plus. Exclusion silencieuse.</td>
+        <td><span class="badge badge-edge">RA-009</span></td>
+      </tr>
+      <tr>
+        <td>T-26</td>
+        <td>Vérifier la barre de statut</td>
+        <td class="result-expected">Toujours "34 bâtiments chargés" — BAT-010 et BAT-011 comptent dans le total mais sont ignorés silencieusement pour les markers.</td>
+        <td><span class="badge badge-edge">RA-009</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">9</span> MSG-006 — Fond de carte indisponible</h2>
+  <div class="note">Ce test nécessite de simuler une coupure réseau ou un blocage des tuiles OSM.</div>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-27</td>
+        <td>Dans DevTools (F12) → Onglet <strong>Network</strong> → Throttling → <strong>Offline</strong>. Recharger la page.</td>
+        <td class="result-expected">Les tuiles de carte ne chargent pas (cases grises). Une bannière marron s'affiche en haut de la carte : <em>"Fond de carte indisponible — les données restent consultables."</em></td>
+        <td><span class="badge badge-ko">MSG-006</span></td>
+      </tr>
+      <tr>
+        <td>T-28</td>
+        <td>Remettre le réseau en ligne (Throttling → No throttling). Cliquer sur la carte.</td>
+        <td class="result-expected">Les tuiles rechargeraient normalement. La bannière MSG-006 reste visible (elle ne disparaît pas automatiquement — comportement attendu pour cette POC).</td>
+        <td><span class="badge badge-ko">MSG-006</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">10</span> Tests unitaires automatisés</h2>
+  <table>
+    <thead><tr><th style="width:3%">#</th><th style="width:35%">Action</th><th>Résultat attendu</th><th style="width:12%">Réf.</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>T-29</td>
+        <td>Dans le terminal PowerShell du projet : <code>npm run test</code></td>
+        <td class="result-expected"><strong>10/10 tests passent</strong> en vert. 0 échec. Couvre : haversine (distance 0, ~130m, symétrie), filtrerParRayon (dans rayon, hors rayon, sans GPS, tri croissant, rayon PARAM_001, liste vide).</td>
+        <td><span class="badge badge-ok">Vitest</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <h2><span class="section-num">✓</span> Résumé — Grille de validation</h2>
+  <table>
+    <thead><tr><th>Bloc</th><th>Tests</th><th>Capacités couvertes</th></tr></thead>
+    <tbody>
+      <tr><td>Démarrage</td><td>T-01 à T-03</td><td>C-001, MSG-002</td></tr>
+      <tr><td>Géocodage adresse valide</td><td>T-04 à T-08</td><td>C-002, C-003</td></tr>
+      <tr><td>CA-005 suggestions</td><td>T-09 à T-10</td><td>CA-005, geoEngine</td></tr>
+      <tr><td>Erreurs géocodage</td><td>T-11 à T-12</td><td>MSG-005, UX</td></tr>
+      <tr><td>Fallback clic carte</td><td>T-13 à T-14</td><td>DEC-007, MSG-007</td></tr>
+      <tr><td>Filtres</td><td>T-15 à T-19</td><td>C-004, RA-012</td></tr>
+      <tr><td>Fiche synthétique</td><td>T-20 à T-24</td><td>C-005, RA-013, RA-014</td></tr>
+      <tr><td>Bâtiments sans GPS</td><td>T-25 à T-26</td><td>RA-009</td></tr>
+      <tr><td>Fond de carte indisponible</td><td>T-27 à T-28</td><td>MSG-006</td></tr>
+      <tr><td>Tests unitaires</td><td>T-29</td><td>geoEngine (10 tests)</td></tr>
+    </tbody>
+  </table>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>
