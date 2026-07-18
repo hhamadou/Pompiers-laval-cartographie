@@ -298,3 +298,9 @@ chore: description    # config, dépendances, docs
 - La recherche ne se déclenche désormais que via le bouton **📍 Localiser** ou la touche **Entrée**
 - La liste de suggestions CA-005 (max 3 résultats) reste fonctionnelle après le submit
 - 10 tests — toujours tous passants ✓
+
+### [Session 4] — Gouvernance du fichier contexte (`chore`)
+- Création de ce fichier `Zero Loss Context Transfer Protocol.md` et versionnement dans le repo Git
+- Décision : **une seule copie** conservée dans `pompiers-laval-cartographie/` (versionnée)
+- La copie à la racine du playground (`C:\Users\XXHamadou\.bob\playground\`) a été supprimée
+- Règle : ce fichier est mis à jour dans le repo à chaque fin de session, puis poussé avec le code
