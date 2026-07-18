@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import styles from './SearchBar.module.css'
 import { MESSAGES } from '../../config/params.js'
-
-const DEBOUNCE_MS = 300
 
 /**
  * SearchBar — C-002, CA-005
  * Champ de saisie d'adresse d'intervention + bouton Localiser.
- * Autocomplétion live (debounce 300ms) pendant la frappe.
+ * La recherche n'est déclenchée que via le bouton Localiser ou la touche Entrée.
  * Bouton ✕ pour effacer/réinitialiser la recherche.
  * Si plusieurs résultats Nominatim, affiche une liste déroulante (max 3).
  * Référence : section 9 C-002, CA-005.
  *
  * @param {object}   props
- * @param {Function} props.onLocaliser     Appelé avec l'adresse saisie (recherche manuelle via Entrée/bouton)
+ * @param {Function} props.onLocaliser     Appelé avec l'adresse saisie (bouton ou Entrée)
  * @param {Function} props.onSelectionner  Appelé avec {lat, lon} quand l'utilisateur choisit une suggestion
  * @param {Function} props.onReinitialiser Appelé quand l'utilisateur efface la recherche
  * @param {Array}    props.suggestions     Tableau de {lat, lon, libelle} retourné par geoEngine
@@ -22,25 +20,10 @@ const DEBOUNCE_MS = 300
  */
 export default function SearchBar({ onLocaliser, onSelectionner, onReinitialiser, suggestions = [], chargement, messageErreur }) {
   const [adresse, setAdresse] = useState('')
-  const debounceRef = useRef(null)
-
-  // Autocomplétion — déclenche la recherche après 300ms d'inactivité
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    const trimmed = adresse.trim()
-    // Ne chercher qu'à partir de 4 caractères pour éviter des requêtes inutiles
-    if (trimmed.length >= 4) {
-      debounceRef.current = setTimeout(() => {
-        onLocaliser(trimmed)
-      }, DEBOUNCE_MS)
-    }
-    return () => clearTimeout(debounceRef.current)
-  }, [adresse])
 
   function handleSubmit(e) {
     e.preventDefault()
     if (adresse.trim()) {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
       onLocaliser(adresse.trim())
     }
   }
@@ -52,7 +35,6 @@ export default function SearchBar({ onLocaliser, onSelectionner, onReinitialiser
 
   function handleEffacer() {
     setAdresse('')
-    if (debounceRef.current) clearTimeout(debounceRef.current)
     onReinitialiser()
   }
 

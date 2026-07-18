@@ -62,3 +62,14 @@ feat: description     # nouvelle fonctionnalité
 fix: description      # correction de bug
 chore: description    # config, dépendances, docs
 ```
+
+---
+
+## Historique des modifications
+
+### SearchBar — Recherche manuelle uniquement (`fix`)
+- Suppression du `useEffect` de debounce qui déclenchait `onLocaliser` à chaque frappe.
+- La recherche Nominatim n'est plus déclenchée pendant la frappe.
+- Elle s'exécute uniquement via le bouton **📍 Localiser** ou la touche **Entrée**.
+- La liste de suggestions CA-005 (max 3 résultats) reste fonctionnelle après le submit.
+- Imports `useEffect` et `useRef` retirés de `SearchBar.jsx` (devenus inutiles).
